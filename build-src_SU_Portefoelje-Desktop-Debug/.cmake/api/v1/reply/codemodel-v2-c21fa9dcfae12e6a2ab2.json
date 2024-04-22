@@ -1,0 +1,60 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "src_SU_Portefoelje",
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "src_SU_Portefoelje::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-src_SU_Portefoelje-Debug-ed973e77dd0506fab254.json",
+					"name" : "src_SU_Portefoelje",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/lucas/workspace/2. Semester/SU/SU_Portefoelje/SU_Portefoelje2024/build-src_SU_Portefoelje-Desktop-Debug",
+		"source" : "/home/lucas/workspace/2. Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
