@@ -197,6 +197,30 @@ QT_CREATOR_SKIP_PACKAGE_MANAGER_SETUP:BOOL=OFF
 //No help, variable specified on the command line.
 QT_QMAKE_EXECUTABLE:STRING=
 
+//The directory containing a CMake configuration file for Qt5Core.
+Qt5Core_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Core
+
+//The directory containing a CMake configuration file for Qt5Gui.
+Qt5Gui_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Gui
+
+//The directory containing a CMake configuration file for Qt5Network.
+Qt5Network_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Network
+
+//The directory containing a CMake configuration file for Qt5QmlModels.
+Qt5QmlModels_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5QmlModels
+
+//The directory containing a CMake configuration file for Qt5Qml.
+Qt5Qml_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Qml
+
+//The directory containing a CMake configuration file for Qt5Quick.
+Qt5Quick_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Quick
+
+//The directory containing a CMake configuration file for Qt5Sql.
+Qt5Sql_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5Sql
+
+//The directory containing a CMake configuration file for Qt5.
+Qt5_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/Qt5
+
 //Value Computed by CMake
 src_SU_Portefoelje_BINARY_DIR:STATIC=/home/lucas/workspace/2. Semester/SU/SU_Portefoelje/SU_Portefoelje2024/build-src_SU_Portefoelje-Desktop-Debug
 

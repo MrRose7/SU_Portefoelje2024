@@ -1,0 +1,21 @@
+CREATE SCHEMA su_portefoelje2024;
+USE su_portefoelje2024;
+
+create table hero (
+  hero_id int not null AUTO_INCREMENT,
+  name char(50),
+  xp int not null,
+  level int not null,
+  hp int not null,
+  strength int not null,
+  primary key (hero_id)
+);
+
+create table enemy (
+  enemy_id int not null AUTO_INCREMENT,
+  name char(50),
+  hp int not null,
+  strength int not null,
+  xp_drop int not null,
+  primary key (enemy_id)
+);

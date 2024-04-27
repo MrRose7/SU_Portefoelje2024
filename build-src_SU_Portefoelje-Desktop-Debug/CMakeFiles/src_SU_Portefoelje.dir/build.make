@@ -92,6 +92,8 @@ src_SU_Portefoelje_EXTERNAL_OBJECTS =
 
 src_SU_Portefoelje: CMakeFiles/src_SU_Portefoelje.dir/main.cpp.o
 src_SU_Portefoelje: CMakeFiles/src_SU_Portefoelje.dir/build.make
+src_SU_Portefoelje: /usr/lib/x86_64-linux-gnu/libQt5Sql.so.5.15.3
+src_SU_Portefoelje: /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.15.3
 src_SU_Portefoelje: CMakeFiles/src_SU_Portefoelje.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/lucas/workspace/2. Semester/SU/SU_Portefoelje/SU_Portefoelje2024/build-src_SU_Portefoelje-Desktop-Debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable src_SU_Portefoelje"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/src_SU_Portefoelje.dir/link.txt --verbose=$(VERBOSE)

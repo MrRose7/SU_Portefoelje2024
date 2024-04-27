@@ -1,14 +1,20 @@
 #include <iostream>
 #include "hero.h"
 #include "enemy.h"
+#include "DBFetch.h"
+#include "game.h"
 
 int main()
 {
-    Hero mickeyMouse("Mickey Mouse");
-    mickeyMouse.print();
+    // Initialises database
+    DBFetch DB;
+    DB.dbInit();
 
-    Enemy joeBiden("Joe Biden", 1, 1, 100);
-    joeBiden.print();
+    Hero test;
+    test.selectHero();
+
+    Game chooseOption;
+    chooseOption.gameInit();
 
     return 0;
 }
