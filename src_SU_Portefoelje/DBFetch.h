@@ -4,9 +4,17 @@
 #include <QtSql>
 #include <QSqlDatabase>
 #include <iostream>
+#include "hero.h"
 
 /* Class to fetch data from database*/
 class DBFetch {
+private:
+//    std::string _name = "noHero";
+//    int _xp = 0;
+//    int _level = 0;
+//    int _hp = 0;
+//    int _strength = 0;
+
 public:
     void dbInit() {         // Method for initialising database
         QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
@@ -39,6 +47,36 @@ public:
         }
         std::cout << "----------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
+    }
+
+    void selectHero() {         // VIKRER IKKE
+        int selection;
+        std::cout << "Chose a Hero to plays as, by writing the heroes ID:   ";
+        std::cin >> selection;
+        std::cout << std::endl;
+
+        QSqlQuery query;
+
+        query.prepare("SELECT name, xp, level, hp, strength FROM hero WHERE hero.hero_id=?");
+        query.addBindValue(selection);
+        query.exec();
+
+        std::string name;
+        int xp;
+        int level;
+        int hp;
+        int strength;
+        while (query.next()){
+            QString tempName = query.value(0).toString();
+            name = tempName.toStdString();
+            xp = query.value(1).toInt();
+            level = query.value(2).toInt();
+            hp = query.value(3).toInt();
+            strength = query.value(4).toInt();
+        }
+
+        Hero hero(name, xp, level, hp, strength);
+        hero.print();
     }
 
 };

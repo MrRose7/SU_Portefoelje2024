@@ -181,6 +181,11 @@ CMakeFiles/src_SU_Portefoelje.dir/main.cpp.o: /home/lucas/workspace/2.\ Semester
   /home/lucas/workspace/2.\ Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje/hero.h \
   /usr/include/c++/11/sstream \
   /usr/include/c++/11/bits/sstream.tcc \
+  /usr/include/c++/11/vector \
+  /usr/include/c++/11/bits/stl_uninitialized.h \
+  /usr/include/c++/11/bits/stl_vector.h \
+  /usr/include/c++/11/bits/stl_bvector.h \
+  /usr/include/c++/11/bits/vector.tcc \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/QCoreApplication \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qcoreapplication.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qglobal.h \
@@ -246,11 +251,6 @@ CMakeFiles/src_SU_Portefoelje.dir/main.cpp.o: /home/lucas/workspace/2.\ Semester
   /usr/include/c++/11/bits/std_function.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qvector.h \
   /usr/include/x86_64-linux-gnu/qt5/QtCore/qcontainertools_impl.h \
-  /usr/include/c++/11/vector \
-  /usr/include/c++/11/bits/stl_uninitialized.h \
-  /usr/include/c++/11/bits/stl_vector.h \
-  /usr/include/c++/11/bits/stl_bvector.h \
-  /usr/include/c++/11/bits/vector.tcc \
   /usr/include/c++/11/list \
   /usr/include/c++/11/bits/stl_list.h \
   /usr/include/c++/11/bits/allocated_ptr.h \
@@ -1446,6 +1446,20 @@ CMakeFiles/src_SU_Portefoelje.dir/main.cpp.o: /home/lucas/workspace/2.\ Semester
 
 /usr/include/c++/11/sstream:
 
+/usr/include/c++/11/vector:
+
+/usr/include/c++/11/bits/stl_uninitialized.h:
+
+/usr/include/c++/11/bits/stl_numeric.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
+
+/usr/include/c++/11/bits/stl_bvector.h:
+
+/usr/include/c++/11/bits/vector.tcc:
+
 /usr/include/c++/11/condition_variable:
 
 /usr/include/c++/11/ratio:
@@ -1546,25 +1560,11 @@ CMakeFiles/src_SU_Portefoelje.dir/main.cpp.o: /home/lucas/workspace/2.\ Semester
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qhashfunctions.h:
 
-/usr/include/c++/11/bits/stl_numeric.h:
-
-/usr/include/c++/11/bits/stl_uninitialized.h:
-
 /usr/include/c++/11/array:
 
 /usr/include/c++/11/bits/unique_lock.h:
 
 /usr/include/c++/11/bits/uses_allocator.h:
-
-/usr/include/c++/11/vector:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
-
-/usr/include/c++/11/bits/stl_bvector.h:
-
-/usr/include/c++/11/bits/vector.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
 

@@ -10,11 +10,8 @@ int main()
     DBFetch DB;
     DB.dbInit();
 
-    Hero test;
-    test.selectHero();
-
-    Game chooseOption;
-    chooseOption.gameInit();
+    Game game;
+    game.gameInit();
 
     return 0;
 }

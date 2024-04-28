@@ -33,38 +33,13 @@ public:
         query.exec();
     }
 
-    Hero(std::string name, int xp, int level, int hp, int strength) {
-
-    }
+    Hero(std::string name, int xp, int level, int hp, int strength) : _name(name), _xp(xp), _level(level), _hp(hp), _strength(strength) {} // Constructor to edit existing hero
 
     std::string newHero() {     // Method for creating a new character by getting name as user input
         std::string newHeroName;
         std::cout << "Choose a name for your Hero (one word only):  ";
         std::cin >> newHeroName;
         return newHeroName;
-    }
-
-    void selectHero() {         // VIKRER IKKE
-        int selection;
-        std::cout << "Chose a Hero to plays as, by writing the heroes ID:   ";
-        std::cin >> selection;
-        std::cout << std::endl;
-
-        QSqlQuery query;
-
-        query.prepare("SELECT name, xp, level, hp, strength FROM hero WHERE hero.hero_id=?");
-        query.addBindValue(selection);
-        query.exec();
-
-
-        while (query.next()){
-            QString tempName = query.value(0).toString();
-            _name = tempName.toStdString();
-            _xp = query.value(1).toInt();
-            _level = query.value(2).toInt();
-            _hp = query.value(3).toInt();
-            _strength = query.value(4).toInt();
-        }
     }
 
     void print() {
