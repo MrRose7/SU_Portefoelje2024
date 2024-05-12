@@ -10,6 +10,7 @@ int main()
     DBFetch DB;
     DB.dbInit();
 
+    // Runs game
     Game game;
     game.gameInit();
 

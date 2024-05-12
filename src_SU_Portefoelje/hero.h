@@ -42,6 +42,22 @@ public:
         return newHeroName;
     }
 
+    int getStrength() {         // Getter method for getting heroes strength
+        return _strength;
+    }
+
+    int getHp() {               // Getter method for getting heroes current hp;
+        return _hp;
+    }
+
+    std::string getName() {     // Getter method for getting heroes name
+        return _name;
+    }
+
+    void decHp(int x) {         // Method for decreasing heroes hp
+        _hp -= x;
+    }
+
     void print() {
         std::cout << "----------------------------------" << std::endl;
         std::cout << "Your heroes info:    " << std::endl;

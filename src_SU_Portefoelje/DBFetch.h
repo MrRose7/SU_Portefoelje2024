@@ -5,16 +5,10 @@
 #include <QSqlDatabase>
 #include <iostream>
 #include "hero.h"
+#include "enemy.h"
 
 /* Class to fetch data from database*/
 class DBFetch {
-private:
-//    std::string _name = "noHero";
-//    int _xp = 0;
-//    int _level = 0;
-//    int _hp = 0;
-//    int _strength = 0;
-
 public:
     void dbInit() {         // Method for initialising database
         QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
@@ -25,7 +19,7 @@ public:
         db.open();
     }
 
-    void printHeroes() {
+    void printHeroes() {    // Method for printing all heroes in the database, to showcase their stats
         QSqlQuery query;
 
         query.prepare("SELECT * FROM hero");
@@ -49,9 +43,9 @@ public:
         std::cout << std::endl;
     }
 
-    void selectHero() {         // VIKRER IKKE
+    Hero selectHero() {         // Method for creating instance of hero from users selection of a hero to play as
         int selection;
-        std::cout << "Chose a Hero to plays as, by writing the heroes ID:   ";
+        std::cout << "Chose a Hero to play as, by writing the heroes ID:   ";
         std::cin >> selection;
         std::cout << std::endl;
 
@@ -77,6 +71,60 @@ public:
 
         Hero hero(name, xp, level, hp, strength);
         hero.print();
+        return hero;
+    }
+
+    void printEnemies() {       // Method for printing all enemies in the database, to showcase their stats
+        QSqlQuery query;
+
+        query.prepare("SELECT * FROM enemy");
+        query.exec();
+
+        std::cout << "HERE IS A LIST OF ALL ENEMIES" << std::endl;
+        std::cout << "----------------------------------------------------------------------" << std::endl;
+        std::cout << "enemy_id:  " << "name:     " << "  hp:   " << "    strength:    " << "    xp_drop:     " << std::endl;
+        std::cout << "----------------------------------------------------------------------" << std::endl;
+        while (query.next()) {
+                QString enemy_id = query.value(0).toString();
+                QString name = query.value(1).toString();
+                QString hp = query.value(2).toString();
+                QString strength = query.value(3).toString();
+                QString xp_drop = query.value(4).toString();
+
+                qDebug() << enemy_id << ",   " << name << ", " << hp << ",       " << strength << ",    " << xp_drop;
+        }
+        std::cout << "----------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    Enemy selectEnemy() {         // Method for creating instance of hero from users selection of a hero to play as
+        int selection;
+        std::cout << "FIGHTING TIME...   " << std::endl;
+        std::cout << "Chose an enemy to fight by writing the enemies ID:   ";
+        std::cin >> selection;
+        std::cout << std::endl;
+
+        QSqlQuery query;
+
+        query.prepare("SELECT name, hp, strength, xp_drop FROM enemy WHERE enemy.enemy_id=?");
+        query.addBindValue(selection);
+        query.exec();
+
+        std::string name;
+        int hp;
+        int strength;
+        int xp_drop;
+        while (query.next()){
+            QString tempName = query.value(0).toString();
+            name = tempName.toStdString();
+            hp = query.value(1).toInt();
+            strength = query.value(2).toInt();
+            xp_drop = query.value(3).toInt();
+        }
+
+        Enemy enemy(name, hp, strength, xp_drop);
+        enemy.print();
+        return enemy;
     }
 
 };
