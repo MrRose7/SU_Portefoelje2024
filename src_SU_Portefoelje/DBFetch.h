@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <iostream>
 #include <algorithm>
+#include <stdlib.h>
 #include "hero.h"
 #include "enemy.h"
 
@@ -12,11 +13,26 @@
 class DBFetch {
 public:
     void dbInit() {         // Method for initialising database
+        std::string dbUsername;
+        std::string dbPassword;
+
+        std::cout << "For the database to properly be initialised please type the username and password used for your mysql localhost." << std::endl;
+        std::cout << std::endl;
+        std::cout << "Username:     ";
+        std::cin >> dbUsername;
+        std::cout << "Password:     ";
+        std::cin >> dbPassword;
+
+        system("clear");
+
+        QString QdbUsername = QString::fromStdString(dbUsername);
+        QString QdbPassword = QString::fromStdString(dbPassword);
+
         QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
         db.setHostName("localhost");
         db.setDatabaseName("su_portefoelje2024");
-        db.setUserName("lucas");        // Change to username
-        db.setPassword("password");     // Change to password
+        db.setUserName(QdbUsername);    // Change to username
+        db.setPassword(QdbPassword);    // Change to password
         db.open();
     }
 
