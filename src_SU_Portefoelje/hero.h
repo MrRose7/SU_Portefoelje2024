@@ -58,6 +58,10 @@ public:
         _hp -= x;
     }
 
+    void incXp(int x) {         // Method for increasing heroes xp
+        _xp += x;
+    }
+
     void print() {
         std::cout << "----------------------------------" << std::endl;
         std::cout << "Your heroes info:    " << std::endl;

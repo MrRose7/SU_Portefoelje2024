@@ -4,6 +4,7 @@
 #include <QtSql>
 #include <QSqlDatabase>
 #include <iostream>
+#include <algorithm>
 #include "hero.h"
 #include "enemy.h"
 
@@ -43,14 +44,41 @@ public:
         std::cout << std::endl;
     }
 
-    Hero selectHero() {         // Method for creating instance of hero from users selection of a hero to play as
-        int selection;
-        std::cout << "Chose a Hero to play as, by writing the heroes ID:   ";
-        std::cin >> selection;
-        std::cout << std::endl;
+    Hero selectHero() {             // Method for creating instance of hero from users selection of a hero to play as
+        // Vector to store hero_id's in
+        std::vector<int> hero_idVec;
+        int hero_id;
 
+        // SQL query to get all hero id's from the database
+        QSqlQuery queryCheck;
+        queryCheck.prepare("SELECT hero_id FROM hero");
+        queryCheck.exec();
+        while(queryCheck.next()) {  // Loops through all hero id's in database and appends them to hero_idVec
+            hero_id = queryCheck.value(0).toInt();
+            hero_idVec.push_back(hero_id);
+        }
+
+        int selection;              // Variable to store user input that is selection for which hero to choose
+
+        bool checkSelection = true;
+        while(checkSelection) {     // Checks if selected hero exists in list of heroes
+            std::cout << "Chose a Hero to play as, by writing the heroes ID:   ";
+            std::cin >> selection;  // Gets user input for which hero to choose
+            std::cout << std::endl;
+
+            // Checks if hero id exists
+            auto findHero_id = std::find(hero_idVec.begin(), hero_idVec.end(), selection);
+            if (findHero_id != hero_idVec.end()) {
+                checkSelection = false;
+            }
+            else
+            {
+                std::cout << "ERROR: Hero not found in list of heroes..." << std::endl;
+            }
+        }
+
+        // Query gets heroes name, xp, level, hp and strength from the database
         QSqlQuery query;
-
         query.prepare("SELECT name, xp, level, hp, strength FROM hero WHERE hero.hero_id=?");
         query.addBindValue(selection);
         query.exec();
@@ -60,7 +88,7 @@ public:
         int level;
         int hp;
         int strength;
-        while (query.next()){
+        while(query.next()) {
             QString tempName = query.value(0).toString();
             name = tempName.toStdString();
             xp = query.value(1).toInt();

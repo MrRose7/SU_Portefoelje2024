@@ -20,6 +20,10 @@ public:
         return _hp;
     }
 
+    int getXpDrop() {       // Getter method for getting enemies xp that is dropped when defeated
+        return _xpDrop;
+    }
+
     std::string getName() { // Getter method for getting enemies name
         return _name;
     }

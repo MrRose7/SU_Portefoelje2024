@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include <iostream>
+#include <stdlib.h>
 #include "DBFetch.h"
 #include "hero.h"
 
@@ -96,6 +97,11 @@ public:
                 }
                 else if(enemyHp <= 0) {
                     std::cout << "You have defeated the mighty enemy whos name goes by " << enemyName << std::endl;
+                    int xpDropped = enemy.getXpDrop();
+                    hero.incXp(xpDropped);
+
+                    std::cout << "----------- UPDATED STATS -----------" << std::endl;
+                    hero.print();
                 }
                 else {
                     std::cout << "Ops something went wrong..." << std::endl;
