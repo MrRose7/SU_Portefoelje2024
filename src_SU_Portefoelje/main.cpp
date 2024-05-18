@@ -6,6 +6,8 @@
 
 int main()
 {
+    system("clear");    // Clearing terminal
+
     // Initialises database
     DBFetch DB;
     DB.dbInit();

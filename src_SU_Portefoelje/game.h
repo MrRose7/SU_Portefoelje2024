@@ -8,7 +8,7 @@
 class Game {
 private:
     int _option;
-    DBFetch _DB;
+    DBFetch _db;
     Hero _initHero;
     bool _runGame;
     bool _runMenu;
@@ -21,8 +21,9 @@ public:
         // While-loop to run the menu
         _runMenu = true;
         while(_runMenu) {
-            std::cout << "Welcome to my game where you, as a hero, will try to fight of all the enemies!" << std::endl;
-            std::cout << "------------------------------------------------------------------------------" << std::endl;
+            std::cout << "Welcome to Dragon Slayer where you, as a hero, will try to fight of all the enemies" << std::endl;
+            std::cout << "to get to the final boss, the migthy dragon Stormwing!" << std::endl;
+            std::cout << "------------------------------------------------------------------------------------" << std::endl;
             std::cout << std::endl;
 
             std::cout << "New game (0), Load game (1):  ";
@@ -37,6 +38,7 @@ public:
                 std::string newHeroName = _initHero.newHero();
                 Hero hero(newHeroName);
                 hero.print();
+                std::cout << std::endl;
 
                 std::cout << "To play with your new hero, please choose option 1 to load a game with your new hero, whereafter you can choose your new hero!" << std::endl;
 
@@ -44,9 +46,10 @@ public:
 
             else if(_option == 1) {
                 // Initialising game by letting player choose a hero to play as and selecting an enemy to fight
-                _DB.printHeroes();
-                hero = _DB.selectHero();
-                _runMenu = false;
+                _runMenu = _db.printHeroes();
+                if(_runMenu == false) {
+                    hero = _db.selectHero();
+                }
             }
 
             else {
@@ -62,9 +65,9 @@ public:
             std::cin >> _option;
             std::cout << std::endl;
 
-            if(_option == 2) {
-                _DB.printEnemies();
-                Enemy enemy = _DB.selectEnemy();
+            if(_option == 2) {      // If option 2 is choosen enemy fight begins
+                _db.printEnemies();
+                Enemy enemy = _db.selectEnemy();
 
                 // Getting hero and enemy stats
                 int heroStrength = hero.getStrength();
@@ -93,12 +96,23 @@ public:
 
                 // Choosing future game path based on the fights outcome
                 if(heroHp <= 0) {
-                    std::cout << "You have been defeated..." << std::endl;
+                    std::cout << "+---------------------------+" << std::endl;
+                    std::cout << "| You have been defeated... |" << std::endl;
+                    std::cout << "+---------------------------+" << std::endl;
+                    std::cout << std::endl;
+
+                    _db.gameOver();
+                    _runGame = false;
                 }
                 else if(enemyHp <= 0) {
-                    std::cout << "You have defeated the mighty enemy whos name goes by " << enemyName << std::endl;
+                    std::cout << "+-------------------------------------+" << std::endl;
+                    std::cout << "| You have defeated the mighty enemy!" << " |" << std::endl;
+                    std::cout << "+-------------------------------------+" << std::endl;
+                    std::cout << std::endl;
                     int xpDropped = enemy.getXpDrop();
                     hero.incXp(xpDropped);
+
+                    hero.levelUp();
 
                     std::cout << "----------- UPDATED STATS -----------" << std::endl;
                     hero.print();
@@ -109,13 +123,15 @@ public:
 
             }
 
-            else if(_option == 5) {
+            else if(_option == 5) {     // If option 5 is choosen game is saved and exited
                 std::cout << "Game saved!" << std::endl;
+
+                _db.updateHero();
 
                 _runGame = false;
             }
 
-            else {
+            else {                      // If user types incorrect option print error and let user try again
                 std::cout << "ERROR: Choose a correct option" << std::endl;
             }
             std::cout << std::endl;

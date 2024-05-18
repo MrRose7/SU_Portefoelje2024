@@ -39,6 +39,8 @@ public:
         std::cout << "HP:       " << _hp << std::endl;
         std::cout << "Strength: " << _strength << std::endl;
         std::cout << "XP dropped if killed: " << _xpDrop << std::endl;
+        std::cout << "----------------------------------" << std::endl;
+        std::cout << std::endl;
     }
 };
 
