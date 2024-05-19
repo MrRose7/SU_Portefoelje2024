@@ -1,0 +1,53 @@
+Beskrivelse af iteration 1.
+______________________________
+
+- Oprettet database indeholdende spilinfo om heroes og enemies.
+
+- Oprettet headerfilerne DBFetch.h, enemy.h, game.h og hero.h, samt en main.cpp fil.
+
+	- DBFetch.h står primært for initialisereing af databasen og at hente og skrive data til databasen løbende, 				
+	idet det er nødvendigt (f.eks. når en heroes info skal opdateres skrives der til databasen).
+	
+	- enemy.h bruges til at konstruerer enemies i spillet, sådan at den enemy man vil kæmpe mod kan oprettet med 
+	de korrekte data fra databasen.
+	Derudover indeholder filen getter-metoder til at returnere en enemies info.
+	Der er også en metode der muliggøre at en enemies hp kan sænkes, sådan at det i en fight er muligt at dræbe 
+	en enemy.
+	Ydermere er der en printmetode, der kan prine informationen af en enemy, så man i en fight kan se info for 
+	den enemy man har valgt at kæmpe imod.
+	
+	- game.h står for at håndtere spillets gang.
+	Først præsenteres en spiller med at skulle indtaste username og password til brugerens egen mysql localhost, 
+	så der kan oprettes forbindelse fra brugerens computer.
+	Dernæst, i en hovedmenu, bliver brugeren præsenteret til spillet og valgende om at lave et nyt spil eller 
+	spille videre på et eksiterende spil.
+	Ved at vælge at starte et nyt spil, får brugeren mulighed for at oprette en ny hero, der bliver gemt i 
+	databasen.
+	Ved at vælge at forsætte med et eksitrerende spil, bliver brugeren mødt af en liste med de heroes der er 
+	oprettet i databasen, hvorefter man kan vælge den hero man vil spille som.
+	Når brugeren har startet et spil, får de muligheden for at kæmpe mod enemies eller gemme og lukke spillet.
+	Vælger brugeren at kæmpe mod enemies, bliver vedkommende mødt af en liste af enemies og deres info, 
+	hvorefter det er muligt at vælge hvilken enemy man ønsker at kæmpe mod.
+	Vælger brugeren i stedet at gemme og lukke, bliver informationen om den hero man spiller med opdateret i 
+	databasen, så man kan komme tilbage til spillet senere og stadig have samme stats.
+	Dræber man enemies får man xp og kan stige i levels.
+	Bliver man dræbt af en enemy er det "Game Over" og ens hero slettes fra databasen.
+	Man kan kæmpe mod den samme enemy om og om igen.
+	
+	- hero.h bruges til at konstruerer heroes i spillet, så man kan oprette en ny hero til databasen eller 
+	oprette en ekisterende hero fra databasen i spillet.
+	I filen eksiterer bl.a. getter-metoder til at returnere oplysninger om den hero man anvender.
+	Ydermere er der en metode til at sænke en heroes hp i tilfælde af der tages skade i en fight.
+	Der eksisterer også en metode til at forøge en heroes xp, i tilfælde af man dræber en enemy.
+	Derudover er der oprettet en metode der mulligøre at ens hero kan stige i level.
+	Som det sidste indeholder filen en metode til at printe ens heroes informationer, så man kan se dem i løbet 
+	af spillet.
+	
+	- main.cpp filen er bruges til at instansiere spillet, ved først at oprette forbindelse til databasen ved 
+	brug af metoder fra DBFetch.h, hvorefter selve spille startes, ved at bruge metoder fra game.h.
+	
+- Jeg har valgt at kalde spillet "Dragon Slayer".
+
+- I løbet af spillet bliver terminalen løbende ryddet, så det skaber en mere overskuelig oplevelse for brugeren.
+
+- Generelt er spillet lavet i stil med fantasy, hvor man som en hero skal kæmpe mod monstre for at blive stærkere, så man kan dræbe dragen "Stormwing".
