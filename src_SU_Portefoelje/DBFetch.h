@@ -14,7 +14,7 @@ class DBFetch {
 private:
     int _heroSelection;     // Variable to store user input that is selection for which hero to choose
     int _enemySelection;    // Variable to store user input that is selection for which enemy to fight
-    Hero _hero;
+//    Hero _hero;
 
 public:
     void dbInit() {         // Method for initialising database
@@ -116,6 +116,7 @@ public:
             auto findHero_id = std::find(hero_idVec.begin(), hero_idVec.end(), _heroSelection);
             if (findHero_id != hero_idVec.end()) {
                 checkSelection = false;
+                system("clear");
             }
             else
             {
@@ -154,7 +155,7 @@ public:
         query.prepare("SELECT * FROM enemy");
         query.exec();
 
-        std::cout << "HERE IS A LIST OF ALL ENEMIES" << std::endl;
+        std::cout << "LIST OF ENEMIES TO FIGHT" << std::endl;
         std::cout << "----------------------------------------------------------------------" << std::endl;
         std::cout << "enemy_id:  " << "name:     " << "  hp:   " << "    strength:    " << "    xp_drop:     " << std::endl;
         std::cout << "----------------------------------------------------------------------" << std::endl;
@@ -196,10 +197,11 @@ public:
             auto findEnemyero_id = std::find(enemy_idVec.begin(), enemy_idVec.end(), _enemySelection);
             if (findEnemyero_id != enemy_idVec.end()) {
                 checkSelection = false;
+                system("clear");
             }
             else
             {
-                std::cout << "ERROR: Enemy not found in list of heroes..." << std::endl;
+                std::cout << "ERROR: Enemy not found in list of enemies..." << std::endl;
             }
         }
 
@@ -226,26 +228,19 @@ public:
         return enemy;
     }
 
-    void updateHero() {
-        int heroXp = _hero.getXp();
-        int heroLevel = _hero.getLevel();
-        int heroHp = _hero.getHp();
-        int heroStrength = _hero.getStrength();
+    void updateHero(int heroXp, int heroLevel, int heroHp, int heroStrength) {  // Method for updating heroes stats in the database (used when saving a game)
+        QSqlQuery query;
 
-        std::cout << "-----------  " << heroXp << std::endl;
-
-//        QSqlQuery query;
-
-//        query.prepare("UPDATE hero SET xp=(:xp), level=(:level), hp=(:hp), strength=(:strength) WHERE hero.hero_id=?");
-//        query.addBindValue(_heroSelection);
-//        query.bindValue(":xp", heroXp);
-//        query.bindValue(":level", heroLevel);
-//        query.bindValue(":hp", heroHp);
-//        query.bindValue(":strength", heroStrength);
-//        query.exec();
+        query.prepare("UPDATE hero SET xp=?, level=?, hp=?, strength=? WHERE hero.hero_id=?");
+        query.addBindValue(heroXp);
+        query.addBindValue(heroLevel);
+        query.addBindValue(heroHp);
+        query.addBindValue(heroStrength);
+        query.addBindValue(_heroSelection);
+        query.exec();
     }
 
-    void gameOver() {
+    void gameOver() {   // Method for deleting hero from database (used for when hero is defeated)
         std::cout << "+------------+" << std::endl;
         std::cout << "| GAME OVER! |" << std::endl;
         std::cout << "+------------+" << std::endl;

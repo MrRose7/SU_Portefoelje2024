@@ -29,6 +29,7 @@ public:
             std::cout << "New game (0), Load game (1):  ";
             std::cin >> _option;
             std::cout << std::endl;
+            system("clear");
 
             if(_option == 0) {
                 std::cout << "Welcome to your new game!" << std::endl;
@@ -36,6 +37,7 @@ public:
                 std::cout << std::endl;
 
                 std::string newHeroName = _initHero.newHero();
+                system("clear");
                 Hero hero(newHeroName);
                 hero.print();
                 std::cout << std::endl;
@@ -45,6 +47,8 @@ public:
             }
 
             else if(_option == 1) {
+                system("clear");
+
                 // Initialising game by letting player choose a hero to play as and selecting an enemy to fight
                 _runMenu = _db.printHeroes();
                 if(_runMenu == false) {
@@ -64,8 +68,13 @@ public:
             std::cout << "Fight enemies (2), Save & exit (5):   ";
             std::cin >> _option;
             std::cout << std::endl;
+            system("clear");
 
             if(_option == 2) {      // If option 2 is choosen enemy fight begins
+                hero.print();       // Printing heroes info
+                std::cout << std::endl;
+
+                // Printing list of enemies to fight and letting user choose which enemy to fight
                 _db.printEnemies();
                 Enemy enemy = _db.selectEnemy();
 
@@ -124,9 +133,20 @@ public:
             }
 
             else if(_option == 5) {     // If option 5 is choosen game is saved and exited
-                std::cout << "Game saved!" << std::endl;
+                hero.print();
+                std::cout << std::endl;
 
-                _db.updateHero();
+                std::cout << "+-------------+" << std::endl;
+                std::cout << "| Game saved! |" << std::endl;
+                std::cout << "+-------------+" << std::endl;
+
+                // Getting necessary hero stats
+                int heroXp = hero.getXp();
+                int heroLevel = hero.getLevel();
+                int heroHp = hero.getHp();
+                int heroStrength = hero.getStrength();
+
+                _db.updateHero(heroXp, heroLevel, heroHp, heroStrength);    // Updating hero in database for the game to be saved
 
                 _runGame = false;
             }

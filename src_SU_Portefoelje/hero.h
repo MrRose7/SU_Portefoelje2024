@@ -37,9 +37,20 @@ public:
 
     std::string newHero() {     // Method for creating a new character by getting name as user input
         std::string newHeroName;
-        std::cout << "Choose a name for your Hero (one word only):  ";
-        std::cin >> newHeroName;
-        std::cout << std::endl;
+
+        bool checkName = true;
+        while(checkName) {
+            std::cout << "Choose a name for your hero (one word only):  ";
+            std::cin >> newHeroName;
+            std::cout << std::endl;
+
+            // Checks if name for the hero is empty
+            if(newHeroName.empty()) {
+                system("clear");
+                std::cout << "ERROR: Name must not be empty" << std::endl;
+            }
+            else { checkName = newHeroName.empty(); }
+        }
 
         return newHeroName;
     }
@@ -59,9 +70,9 @@ public:
     void incXp(int x) { _xp += x; }             // Method for increasing heroes xp
 
     void levelUp() {                            // Method for increasing heroes level when reaching level*1000xp
-        if((_xp/_level) - (_xp%(_level*1000)) == 1000) {
-            // Increasing level, hp and strength and deleting the amount of xp that was needed to reach that level
-            _xp -= _xp - (_xp%(_level*1000));
+        while(_xp >= _level*1000) {             // While-loop checks if xp is greater than the level*1000xp
+            // Updating hero stats when leveling up
+            _xp -= _level*1000;
             _level++;
             _hp += 2;
             _strength += 1;
@@ -75,7 +86,7 @@ public:
                 std::cout << "| Strength increased by 1  |" << std::endl;
                 std::cout << "+--------------------------+" << std::endl;
             }
-            else {
+            else if(_level >= 10 && _level < 100) {
                 std::cout << "+---------------------------+" << std::endl;
                 std::cout << "| LEVEL UP!                 |" << std::endl;
                 std::cout << "| You have reached level " << _level << " |" << std::endl;
@@ -83,12 +94,20 @@ public:
                 std::cout << "| Strength increased by 1   |" << std::endl;
                 std::cout << "+---------------------------+" << std::endl;
             }
+            else {
+                std::cout << "+----------------------------+" << std::endl;
+                std::cout << "| LEVEL UP!                  |" << std::endl;
+                std::cout << "| You have reached level " << _level << " |" << std::endl;
+                std::cout << "| Hp increased by 2          |" << std::endl;
+                std::cout << "| Strength increased by 1    |" << std::endl;
+                std::cout << "+----------------------------+" << std::endl;
+            }
 
             std::cout << std::endl;
         }
     }
 
-    void print() {
+    void print() {                              // Method for printing heroes info
         std::cout << "----------------------------------" << std::endl;
         std::cout << "Your heroes info:    " << std::endl;
         std::cout << "Name:     " << _name << std::endl;
