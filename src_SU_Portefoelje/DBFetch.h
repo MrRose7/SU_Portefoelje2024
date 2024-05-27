@@ -14,7 +14,6 @@ class DBFetch {
 private:
     int _heroSelection;     // Variable to store user input that is selection for which hero to choose
     int _enemySelection;    // Variable to store user input that is selection for which enemy to fight
-//    Hero _hero;
 
 public:
     void dbInit() {         // Method for initialising database

@@ -65,7 +65,7 @@ public:
         // While-loop to run the game
         _runGame = true;
         while(_runGame) {
-            std::cout << "Fight enemies (2), Save & exit (5):   ";
+            std::cout << "Fight enemy (2), Save & exit (5):   ";
             std::cin >> _option;
             std::cout << std::endl;
             system("clear");
