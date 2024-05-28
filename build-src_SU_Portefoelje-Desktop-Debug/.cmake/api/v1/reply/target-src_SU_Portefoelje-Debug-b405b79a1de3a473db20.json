@@ -149,7 +149,9 @@
 			[
 				1,
 				2,
-				3
+				3,
+				4,
+				5
 			]
 		}
 	],
@@ -174,6 +176,16 @@
 		{
 			"backtrace" : 1,
 			"path" : "DBFetch.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "game.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "cave.h",
 			"sourceGroupIndex" : 1
 		}
 	],

@@ -8,12 +8,14 @@
 #include <stdlib.h>
 #include "hero.h"
 #include "enemy.h"
+#include "cave.h"
 
 /* Class to fetch data from database*/
 class DBFetch {
 private:
     int _heroSelection;     // Variable to store user input that is selection for which hero to choose
     int _enemySelection;    // Variable to store user input that is selection for which enemy to fight
+    int _caveSelection;     // Variable to store user input that is selection for which cave to enter
 
 public:
     void dbInit() {         // Method for initialising database
@@ -70,8 +72,6 @@ public:
 
             std::cout << "ALL SAVED GAMES" << std::endl;
             std::cout << "----------------------------------------------------------------------" << std::endl;
-            std::cout << "hero_id:  " << "name:     " << "  xp:   " << "    level:    " << "    hp:     " << "strength:" << std::endl;
-            std::cout << "----------------------------------------------------------------------" << std::endl;
             while (query.next()) {
                     QString hero_id = query.value(0).toString();
                     QString name = query.value(1).toString();
@@ -80,7 +80,7 @@ public:
                     QString hp = query.value(4).toString();
                     QString strength = query.value(5).toString();
 
-                    qDebug() << hero_id << ",   " << name << ", " << xp << ",       " << level << ",    " << hp << ",   " << strength;
+                    std::cout << "id=" << hero_id.toStdString() << ", name=" << name.toStdString() << ", xp=" << xp.toStdString() << ", lvl=" << level.toStdString() << ", hp=" << hp.toStdString() << ", strength=" << strength.toStdString() << std::endl;
             }
             std::cout << "----------------------------------------------------------------------" << std::endl;
             std::cout << std::endl;
@@ -148,15 +148,13 @@ public:
         return hero;
     }
 
-    void printEnemies() {       // Method for printing all enemies in the database, to showcase their stats
+    void printEnemies() {       // Method for printing enemies in the database, outside of caves, to showcase their stats
         QSqlQuery query;
 
-        query.prepare("SELECT * FROM enemy");
+        query.prepare("SELECT * FROM enemy WHERE enemy.enemy_id NOT IN (SELECT cave_enemy.enemy_id FROM cave_enemy)");
         query.exec();
 
         std::cout << "LIST OF ENEMIES TO FIGHT" << std::endl;
-        std::cout << "----------------------------------------------------------------------" << std::endl;
-        std::cout << "enemy_id:  " << "name:     " << "  hp:   " << "    strength:    " << "    xp_drop:     " << std::endl;
         std::cout << "----------------------------------------------------------------------" << std::endl;
         while (query.next()) {
                 QString enemy_id = query.value(0).toString();
@@ -165,36 +163,37 @@ public:
                 QString strength = query.value(3).toString();
                 QString xp_drop = query.value(4).toString();
 
-                qDebug() << enemy_id << ",   " << name << ", " << hp << ",       " << strength << ",    " << xp_drop;
+                std::cout << "id=" << enemy_id.toStdString() << ", name=" << name.toStdString() << ", hp=" << hp.toStdString() << ", strength=" << strength.toStdString() << ", xpDrop=" << xp_drop.toStdString() << std::endl;
+
         }
         std::cout << "----------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
     }
 
-    Enemy selectEnemy() {         // Method for creating instance of enemy from users selection of a hero to play as
+    Enemy selectEnemy() {         // Method for creating instance of enemy from users selection of enemy to fight
         // Vector to store enemy_id's in
         std::vector<int> enemy_idVec;
         int enemy_id;
 
         // SQL query to get all enemies id's from the database
         QSqlQuery queryCheck;
-        queryCheck.prepare("SELECT enemy_id FROM enemy");
+        queryCheck.prepare("SELECT enemy.enemy_id FROM enemy WHERE enemy.enemy_id NOT IN (SELECT cave_enemy.enemy_id FROM cave_enemy)");
         queryCheck.exec();
-        while(queryCheck.next()) {  // Loops through all hero id's in database and appends them to hero_idVec
+        while(queryCheck.next()) {  // Loops through all enemy id's in database and appends them to enemy_idVec
             enemy_id = queryCheck.value(0).toInt();
             enemy_idVec.push_back(enemy_id);
         }
 
         bool checkSelection = true;
-        while(checkSelection) {     // Checks if selected enemy exists in list of heroes
+        while(checkSelection) {     // Checks if selected enemy exists in list of enemies
             std::cout << "FIGHTING TIME...   " << std::endl;
             std::cout << "Choose an enemy to fight by writing the enemies ID:   ";
             std::cin >> _enemySelection;
             std::cout << std::endl;
 
             // Checks if hero id exists
-            auto findEnemyero_id = std::find(enemy_idVec.begin(), enemy_idVec.end(), _enemySelection);
-            if (findEnemyero_id != enemy_idVec.end()) {
+            auto findEnemy_id = std::find(enemy_idVec.begin(), enemy_idVec.end(), _enemySelection);
+            if (findEnemy_id != enemy_idVec.end()) {
                 checkSelection = false;
                 system("clear");
             }
@@ -225,6 +224,100 @@ public:
         Enemy enemy(name, hp, strength, xp_drop);
         enemy.print();
         return enemy;
+    }
+
+    void printCaveEnemies() {       // Method for printing enemies in a cave
+        QSqlQuery query;
+
+        query.prepare("SELECT * FROM enemy WHERE enemy.enemy_id IN (SELECT cave_enemy.enemy_id FROM cave_enemy WHERE cave_enemy.cave_id=?)");
+        query.addBindValue(_caveSelection);
+        query.exec();
+
+        std::cout << "LIST OF ENEMIES TO FIGHT IN THIS CAVE" << std::endl;
+        std::cout << "----------------------------------------------------------------------" << std::endl;
+        while (query.next()) {
+                QString enemy_id = query.value(0).toString();
+                QString name = query.value(1).toString();
+                QString hp = query.value(2).toString();
+                QString strength = query.value(3).toString();
+                QString xp_drop = query.value(4).toString();
+
+                std::cout << "id=" << enemy_id.toStdString() << ", name=" << name.toStdString() << ", hp=" << hp.toStdString() << ", strength=" << strength.toStdString() << ", xpDrop=" << xp_drop.toStdString() << std::endl;
+
+        }
+        std::cout << "----------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    void printCaves() {             // Method for printing all caves
+        QSqlQuery query;
+
+        query.prepare("SELECT * FROM cave");
+        query.exec();
+
+        std::cout << "LIST OF CAVES" << std::endl;
+        std::cout << "----------------------------------------------------------------------" << std::endl;
+        while (query.next()) {
+                QString cave_id = query.value(0).toString();
+                QString name = query.value(1).toString();
+                QString gold = query.value(2).toString();
+
+                std::cout << "id=" << cave_id.toStdString() << ", name=" << name.toStdString() << ", gold=" << gold.toStdString() << std::endl;
+
+        }
+        std::cout << "----------------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+    }
+
+    Cave selectCave() {
+        // Vector to store cave_id's in
+        std::vector<int> cave_idVec;
+        int cave_id;
+
+        // SQL query to get all cave_id's from the database
+        QSqlQuery queryCheck;
+        queryCheck.prepare("SELECT cave.cave_id FROM cave");
+        queryCheck.exec();
+        while(queryCheck.next()) {  // Loops through all cave_id's in database and appends them to cave_idVec
+            cave_id = queryCheck.value(0).toInt();
+            cave_idVec.push_back(cave_id);
+        }
+
+        bool checkSelection = true;
+        while(checkSelection) {     // Checks if selected cave exists in list of caves
+            std::cout << "Choose a cave to enter:   ";
+            std::cin >> _caveSelection;
+            std::cout << std::endl;
+
+            // Checks if hero id exists
+            auto findCave_id = std::find(cave_idVec.begin(), cave_idVec.end(), _caveSelection);
+            if (findCave_id != cave_idVec.end()) {
+                checkSelection = false;
+                system("clear");
+            }
+            else
+            {
+                std::cout << "ERROR: Cave not found in list of caves..." << std::endl;
+            }
+        }
+
+        QSqlQuery query;
+
+        query.prepare("SELECT name, gold FROM cave WHERE cave.cave_id=?");
+        query.addBindValue(_caveSelection);
+        query.exec();
+
+        std::string name;
+        int gold;
+        while (query.next()){
+            QString tempName = query.value(0).toString();
+            name = tempName.toStdString();
+            gold = query.value(1).toInt();
+        }
+
+        Cave cave(name, gold);
+        cave.print();
+        return cave;
     }
 
     void updateHero(int heroXp, int heroLevel, int heroHp, int heroStrength) {  // Method for updating heroes stats in the database (used when saving a game)

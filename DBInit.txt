@@ -22,7 +22,7 @@ create table enemy (
 
 INSERT INTO enemy(name, hp, strength, xp_drop) VALUES
 ("Blob", 1, 1, 100),
-("Spike", 5, 2, 500),
-("Cruel", 10, 5, 1500),
-("Demon", 20, 10, 3000),
-("Dragon", 50, 25, 10000);
+("Spike", 3, 2, 500),
+("Cruel", 5, 5, 1500),
+("Demon", 10, 10, 3000),
+("Stormwing", 30, 25, 10000);

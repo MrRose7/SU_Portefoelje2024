@@ -65,7 +65,7 @@ public:
         // While-loop to run the game
         _runGame = true;
         while(_runGame) {
-            std::cout << "Fight enemy (2), Save & exit (5):   ";
+            std::cout << "Fight enemy (2), Enter a cave (3), Save & exit (5):   ";
             std::cin >> _option;
             std::cout << std::endl;
             system("clear");
@@ -130,6 +130,14 @@ public:
                     std::cout << "Ops something went wrong..." << std::endl;
                 }
 
+            }
+
+            else if(_option == 3) {     // If option 3 is choosen hero gets to enter a cave
+                // Printing list of caves and letting user choose which cave to enter
+                _db.printCaves();
+                Cave cave = _db.selectCave();
+
+                _db.printCaveEnemies(); // Printing list of enemies in the choosen cave
             }
 
             else if(_option == 5) {     // If option 5 is choosen game is saved and exited
