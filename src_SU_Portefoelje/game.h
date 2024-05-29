@@ -14,6 +14,7 @@ private:
     bool _runMenu;
     bool _runCave;
     bool _runCaveFight;
+    bool _gameOver;
 
 public:
     void gameInit() {
@@ -203,6 +204,7 @@ public:
                                 _runCaveFight = false;
                                 _runCave = false;
                                 _runGame = false;
+                                _gameOver = true;
                             }
                             else if(enemyHp <= 0) {
                                 std::cout << "+-------------------------------------+" << std::endl;
@@ -240,8 +242,16 @@ public:
 
                         }
 
-                        std::cout << "You made it through the cave. Nicely done!" << std::endl;
-                        std::cout << "Your reward for this bravery is " << cave.getGold() << " gold!" << std::endl;
+                        if(!_gameOver) {
+                            std::cout << "You made it through the cave. Nicely done!" << std::endl;
+                            std::cout << "Your reward for this bravery is " << cave.getGold() << " gold!" << std::endl;
+                            std::cout << std::endl;
+
+                            hero.incGold(cave.getGold());   // Increasing heroes amount of gold based on what cave was defeated
+                            hero.print();
+                            std::cout << std::endl;
+                        }
+
                         _runCave = false;
                     }
 
@@ -269,8 +279,9 @@ public:
                 int heroLevel = hero.getLevel();
                 int heroHp = hero.getHp();
                 int heroStrength = hero.getStrength();
+                int heroGold = hero.getGold();
 
-                _db.updateHero(heroXp, heroLevel, heroHp, heroStrength);    // Updating hero in database for the game to be saved
+                _db.updateHero(heroXp, heroLevel, heroHp, heroStrength, heroGold);    // Updating hero in database for the game to be saved
 
                 _runGame = false;
             }

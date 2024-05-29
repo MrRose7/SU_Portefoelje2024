@@ -81,8 +81,9 @@ public:
                     QString level = query.value(3).toString();
                     QString hp = query.value(4).toString();
                     QString strength = query.value(5).toString();
+                    QString gold = query.value(6).toString();
 
-                    std::cout << "id=" << hero_id.toStdString() << ", name=" << name.toStdString() << ", xp=" << xp.toStdString() << ", lvl=" << level.toStdString() << ", hp=" << hp.toStdString() << ", strength=" << strength.toStdString() << std::endl;
+                    std::cout << "id=" << hero_id.toStdString() << ", name=" << name.toStdString() << ", xp=" << xp.toStdString() << ", lvl=" << level.toStdString() << ", hp=" << hp.toStdString() << ", strength=" << strength.toStdString() << ", gold=" << gold.toStdString() << std::endl;
             }
             std::cout << "----------------------------------------------------------------------" << std::endl;
             std::cout << std::endl;
@@ -125,9 +126,9 @@ public:
             }
         }
 
-        // Query gets heroes name, xp, level, hp and strength from the database
+        // Query gets heroes name, xp, level, hp, strength and gold from the database
         QSqlQuery query;
-        query.prepare("SELECT name, xp, level, hp, strength FROM hero WHERE hero.hero_id=?");
+        query.prepare("SELECT name, xp, level, hp, strength, gold FROM hero WHERE hero.hero_id=?");
         query.addBindValue(_heroSelection);
         query.exec();
 
@@ -136,6 +137,7 @@ public:
         int level;
         int hp;
         int strength;
+        int gold;
         while(query.next()) {
             QString tempName = query.value(0).toString();
             name = tempName.toStdString();
@@ -143,9 +145,10 @@ public:
             level = query.value(2).toInt();
             hp = query.value(3).toInt();
             strength = query.value(4).toInt();
+            gold = query.value(5).toInt();
         }
 
-        Hero hero(name, xp, level, hp, strength);
+        Hero hero(name, xp, level, hp, strength, gold);
         hero.print();
         return hero;
     }
@@ -354,14 +357,15 @@ public:
         return cave;
     }
 
-    void updateHero(int heroXp, int heroLevel, int heroHp, int heroStrength) {  // Method for updating heroes stats in the database (used when saving a game)
+    void updateHero(int heroXp, int heroLevel, int heroHp, int heroStrength, int heroGold) {  // Method for updating heroes stats in the database (used when saving a game)
         QSqlQuery query;
 
-        query.prepare("UPDATE hero SET xp=?, level=?, hp=?, strength=? WHERE hero.hero_id=?");
+        query.prepare("UPDATE hero SET xp=?, level=?, hp=?, strength=?, gold=? WHERE hero.hero_id=?");
         query.addBindValue(heroXp);
         query.addBindValue(heroLevel);
         query.addBindValue(heroHp);
         query.addBindValue(heroStrength);
+        query.addBindValue(heroGold);
         query.addBindValue(_heroSelection);
         query.exec();
     }
