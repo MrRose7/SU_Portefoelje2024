@@ -17,8 +17,8 @@ public:
     void print() {          // Method for printing cave information
         std::cout << "----------------------------------" << std::endl;
         std::cout << "Cave info:" << std::endl;
-        std::cout << "Name:     " << _name << std::endl;
-        std::cout << "Gold amount to retrieve:  " << _gold << std::endl;
+        std::cout << "Name: " << _name << std::endl;
+        std::cout << "Gold to retrieve: " << _gold << std::endl;
         std::cout << "----------------------------------" << std::endl;
         std::cout << std::endl;
     }

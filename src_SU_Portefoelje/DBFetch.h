@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <stdlib.h>
+#include <vector>
 #include "hero.h"
 #include "enemy.h"
 #include "cave.h"
@@ -13,9 +14,10 @@
 /* Class to fetch data from database*/
 class DBFetch {
 private:
-    int _heroSelection;     // Variable to store user input that is selection for which hero to choose
-    int _enemySelection;    // Variable to store user input that is selection for which enemy to fight
-    int _caveSelection;     // Variable to store user input that is selection for which cave to enter
+    int _heroSelection;             // Variable to store user input that is selection for which hero to choose
+    int _enemySelection;            // Variable to store user input that is selection for which enemy to fight
+    int _caveSelection;             // Variable to store user input that is selection for which cave to enter
+    std::vector<int> _enemyIdVec;   // Vector to store enemy_id's
 
 public:
     void dbInit() {         // Method for initialising database
@@ -233,6 +235,8 @@ public:
         query.addBindValue(_caveSelection);
         query.exec();
 
+        _enemyIdVec = {};           // Clearing vector storing cave enemies id's
+
         std::cout << "LIST OF ENEMIES TO FIGHT IN THIS CAVE" << std::endl;
         std::cout << "----------------------------------------------------------------------" << std::endl;
         while (query.next()) {
@@ -242,11 +246,41 @@ public:
                 QString strength = query.value(3).toString();
                 QString xp_drop = query.value(4).toString();
 
-                std::cout << "id=" << enemy_id.toStdString() << ", name=" << name.toStdString() << ", hp=" << hp.toStdString() << ", strength=" << strength.toStdString() << ", xpDrop=" << xp_drop.toStdString() << std::endl;
+                std::cout << "name=" << name.toStdString() << ", hp=" << hp.toStdString() << ", strength=" << strength.toStdString() << ", xpDrop=" << xp_drop.toStdString() << std::endl;
 
+
+                _enemyIdVec.push_back(enemy_id.toInt());    // Storing id's of enemies from choosen cave in a vector
         }
         std::cout << "----------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
+    }
+
+    std::vector<int> getEnemyIdVec() {  // Getter method for getting vector with cave enemies id's
+        return _enemyIdVec;
+    }
+
+    Enemy selectCaveEnemy(int id) {     // Method for selecting cave enemies (used for automatically figting all enemies in choosen cave)
+        QSqlQuery query;
+
+        query.prepare("SELECT name, hp, strength, xp_drop FROM enemy WHERE enemy.enemy_id=?");
+        query.addBindValue(id);
+        query.exec();
+
+        std::string name;
+        int hp;
+        int strength;
+        int xp_drop;
+        while (query.next()){
+            QString tempName = query.value(0).toString();
+            name = tempName.toStdString();
+            hp = query.value(1).toInt();
+            strength = query.value(2).toInt();
+            xp_drop = query.value(3).toInt();
+        }
+
+        Enemy enemy(name, hp, strength, xp_drop);
+        enemy.print();
+        return enemy;
     }
 
     void printCaves() {             // Method for printing all caves
