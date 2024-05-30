@@ -1,0 +1,98 @@
+CREATE SCHEMA su_portefoelje2024_it3;
+USE su_portefoelje2024_it3;
+
+create table hero (
+  hero_id int not null AUTO_INCREMENT,
+  name char(50),
+  xp int not null,
+  level int not null,
+  hp int not null,
+  strength int not null,
+  gold int not null,
+  magic_niveau int not null,
+  primary key (hero_id)
+);
+
+create table enemy (
+  enemy_id int not null,
+  name char(50),
+  hp int not null,
+  strength int not null,
+  xp_drop int not null,
+  element char(50),
+  primary key (enemy_id)
+);
+
+create table cave (
+  cave_id int not null,
+  name char(50),
+  gold int not null,
+  primary key (cave_id)
+);
+
+create table cave_enemy (
+  cave_enemy_id int not null AUTO_INCREMENT,
+  enemy_id int not null,
+  cave_id int not null,
+  primary key (cave_enemy_id),
+  foreign key (enemy_id) references enemy(enemy_id),
+  foreign key (cave_id) references cave(cave_id)
+);
+
+create table magic (
+  magic_id int not null,
+  name char(50),
+  strength int not null,
+  self_damage int not null,
+  element char(50),
+  required_magic_id int,
+  price int not null,
+  primary key (magic_id)
+);
+
+create table hero_magic (
+  hero_magic_id int not null AUTO_INCREMENT,
+  hero_id int not null,
+  magic_id int not null,
+  primary key (hero_magic_id),
+  foreign key (hero_id) references hero(hero_id),
+  foreign key (magic_id) references magic(magic_id)
+);
+
+INSERT INTO enemy(enemy_id, name, hp, strength, xp_drop) VALUES
+(1, "Blob", 1, 1, 100),
+(2, "Spike", 3, 2, 500),
+(3, "Cruel", 5, 5, 1500),
+(4, "Demon", 10, 10, 3000),
+(5, "Stormwing", 30, 25, 10000),
+(6, "Reaper", 5, 3, 1000),
+(7, "Shadow", 5, 5, 1000),
+(8, "Boulder", 7, 3, 700),
+(9, "StoneMan", 5, 10, 1300),
+(10, "Skeleton", 1, 2, 200),
+(11, "Skullcrusher", 10, 8, 2000),
+(12, "Thief", 3, 3, 300),
+(13, "Coinhead", 10, 10, 3000),
+(14, "Goldclaw", 15, 12, 5000);
+
+INSERT INTO cave(cave_id, name, gold) VALUES
+(1, "Shadowfall", 100),
+(2, "Grimstone", 500),
+(3, "Shatterskull", 1000),
+(4, "Goldhaven", 10000);
+
+INSERT INTO cave_enemy(enemy_id, cave_id) VALUES
+(6, 1),
+(7, 1),
+(8, 2),
+(9, 2),
+(10, 3),
+(11, 3),
+(12, 4),
+(13, 4),
+(14, 4);
+
+INSERT INTO magic(magic_id, name, strength, self_damage, element, required_magic_id, price) VALUES
+(1, "Dust", 1, 0, "Earth", NULL, 100);
+
+
