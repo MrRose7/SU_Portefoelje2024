@@ -297,11 +297,11 @@ public:
                             system("clear");
                             _db.printRequiredMagic(magic.getRequiredMagic());
                         }
-                        else if(_db.checkHeroMagics(magic.getMagicId())) {   // Checks if hero already has the magic
+                        else if(_db.checkHeroMagics(magic.getMagicId())) {  // Checks if hero already has the magic
                             system("clear");
                             std::cout << "Magic already acquired!" << std::endl;
                         }
-                        else if(hero.getGold() < magic.getPrice()) {    // Checks if hero has enough gold for the purchase
+                        else if(hero.getGold() < magic.getPrice()) {        // Checks if hero has enough gold for the purchase
                             system("clear");
                             std::cout << "Not enough gold!" << std::endl;
                             std::cout << "Acquire " << magic.getPrice() - hero.getGold() << " more gold to buy choosen magic..." << std::endl;
@@ -311,8 +311,13 @@ public:
 
                             system("clear");
                             std::cout << "New magic acquired!" << std::endl;
+                            std::cout << magic.getPrice() << " gold has been deducted from your overall amount" << std::endl;
                             std::cout << std::endl;
+
                             magic.print();
+
+                            hero.decGold(magic.getPrice());                 // Decreasing heroes amount of gold based on price of purchase
+
                         }
 
                     }

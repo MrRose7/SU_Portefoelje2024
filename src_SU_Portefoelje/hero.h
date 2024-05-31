@@ -73,7 +73,9 @@ public:
 
     int getMagicNiveau () { return _magicNiveau; }  // Getter method for getting heroes magic niveau
 
-    void incGold(int x) { _gold += x; }             // Method for increasing heroes amount of gold
+    void incGold(int x) { _gold += x; }             // Method for increasing heroes amount of gold upon defeating a cave
+
+    void decGold(int x) { _gold -= x; }             // Method for decreasion heroeas amount of gold upon purchase of new magic
 
     void decHp(int x) { _hp -= x; }                 // Method for decreasing heroes hp
 
