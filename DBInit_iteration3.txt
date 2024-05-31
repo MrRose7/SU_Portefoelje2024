@@ -59,21 +59,21 @@ create table hero_magic (
   foreign key (magic_id) references magic(magic_id)
 );
 
-INSERT INTO enemy(enemy_id, name, hp, strength, xp_drop) VALUES
-(1, "Blob", 1, 1, 100),
-(2, "Spike", 3, 2, 500),
-(3, "Cruel", 5, 5, 1500),
-(4, "Demon", 10, 10, 3000),
-(5, "Stormwing", 30, 25, 10000),
-(6, "Reaper", 5, 3, 1000),
-(7, "Shadow", 5, 5, 1000),
-(8, "Boulder", 7, 3, 700),
-(9, "StoneMan", 5, 10, 1300),
-(10, "Skeleton", 1, 2, 200),
-(11, "Skullcrusher", 10, 8, 2000),
-(12, "Thief", 3, 3, 300),
-(13, "Coinhead", 10, 10, 3000),
-(14, "Goldclaw", 15, 12, 5000);
+INSERT INTO enemy(enemy_id, name, hp, strength, xp_drop, element) VALUES
+(1, "Blob", 1, 1, 100, NULL),
+(2, "Spike", 3, 2, 500, NULL),
+(3, "Cruel", 5, 5, 1500, NULL),
+(4, "Demon", 10, 10, 3000, "Fire"),
+(5, "Stormwing", 30, 25, 10000, "Fire"),
+(6, "Reaper", 5, 3, 1000, "Metal"),
+(7, "Shadow", 5, 5, 1000, "Earth"),
+(8, "Boulder", 7, 3, 700, "Earth"),
+(9, "StoneMan", 5, 10, 1300, "Earth"),
+(10, "Skeleton", 1, 2, 200, "Wood"),
+(11, "Skullcrusher", 10, 8, 2000, "Water"),
+(12, "Thief", 3, 3, 300, "Metal"),
+(13, "Coinhead", 10, 10, 3000, "Metal"),
+(14, "Goldclaw", 15, 12, 5000, "Metal");
 
 INSERT INTO cave(cave_id, name, gold) VALUES
 (1, "Shadowfall", 100),
@@ -93,6 +93,11 @@ INSERT INTO cave_enemy(enemy_id, cave_id) VALUES
 (14, 4);
 
 INSERT INTO magic(magic_id, name, strength, self_damage, element, required_magic_id, price) VALUES
-(1, "Dust", 1, 0, "Earth", NULL, 100);
+(1, "Dust", 1, 0, "Earth", 0, 100),
+(2, "Mud", 2, 0, "Earth", 1, 300),
+(3, "Mud_Canon", 4, 2, "Earth", 2, 500),
+(4, "Stick", 1, 1, "Wood", 0, 100);
+
+
 
 

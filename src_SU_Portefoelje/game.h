@@ -15,6 +15,7 @@ private:
     bool _runCave;
     bool _runCaveFight;
     bool _gameOver;
+    bool _runShop;
 
 public:
     void gameInit() {
@@ -55,6 +56,7 @@ public:
                 _runMenu = _db.printHeroes();
                 if(_runMenu == false) {
                     hero = _db.selectHero();
+                    _db.printAcquiredMagic();
                 }
             }
 
@@ -67,14 +69,14 @@ public:
         // While-loop to run the game
         _runGame = true;
         while(_runGame) {
-            std::cout << "Fight enemy (2), Enter a cave (3), Save & exit (9):   ";
+            std::cout << "Fight enemy (2), Enter a cave (3), Visit magic shop (7), Save & exit (9):   ";
             std::cin >> _option;
             std::cout << std::endl;
             system("clear");
 
             if(_option == 2) {      // If option 2 is choosen enemy fight begins
-                hero.print();       // Printing heroes info
-                std::cout << std::endl;
+                hero.print();
+                _db.printAcquiredMagic();
 
                 // Printing list of enemies to fight and letting user choose which enemy to fight
                 _db.printEnemies();
@@ -139,8 +141,8 @@ public:
                 _db.printCaves();
                 Cave cave = _db.selectCave();
 
-                hero.print();           // Showcasing hero stats
-                std::cout << std::endl;
+                hero.print();
+                _db.printAcquiredMagic();
 
                 _db.printCaveEnemies(); // Printing list of enemies in the choosen cave
 
@@ -163,7 +165,7 @@ public:
                         while(i < caveEnemyIdVec.size() && _runCaveFight) {
                             _db.printCaveEnemies();
                             hero.print();
-                            std::cout << std::endl;
+                            _db.printAcquiredMagic();
 
                             Enemy enemy = _db.selectCaveEnemy(caveEnemyIdVec[i]);
                             i++;
@@ -261,8 +263,71 @@ public:
                         _runCave = false;
                     }
                     else {                      // If user types incorrect option print error and let user try again
+                        std::cout << std::endl;
                         std::cout << "ERROR: Choose a correct option" << std::endl;
                     }
+                }
+            }
+
+            else if(_option == 7) {     // If option 7 is choosen hero visits magic shop
+                std::cout << "Weolcome to the magic shop!" << std::endl;
+                std::cout << "Here you can acquire new magic to help you fight enemies" << std::endl;
+                std::cout << std::endl;
+
+                bool _runShop = true;
+                while(_runShop) {
+                    _db.printMagic();
+                    hero.print();
+                    std::cout << std::endl;
+
+                    std::cout << "Buy new magic (1), Leave magic shop (5):  ";
+                    std::cin >> _option;
+
+                    if(_option == 1) {          // If optoin 1 is choosen hero is able to buy new magic
+                        system("clear");
+
+                        _db.printMagic();
+
+                        hero.print();
+                        std::cout << std::endl;
+
+                        Magic magic = _db.buyMagic();
+
+                        if(magic.getRequiredMagic() != 0 && _db.checkHeroMagics(magic.getRequiredMagic()) == false) {
+                            system("clear");
+                            _db.printRequiredMagic(magic.getRequiredMagic());
+                        }
+                        else if(_db.checkHeroMagics(magic.getMagicId())) {   // Checks if hero already has the magic
+                            system("clear");
+                            std::cout << "Magic already acquired!" << std::endl;
+                        }
+                        else if(hero.getGold() < magic.getPrice()) {    // Checks if hero has enough gold for the purchase
+                            system("clear");
+                            std::cout << "Not enough gold!" << std::endl;
+                            std::cout << "Acquire " << magic.getPrice() - hero.getGold() << " more gold to buy choosen magic..." << std::endl;
+                        }
+                        else if(hero.getGold() >= magic.getPrice() && _db.checkHeroMagics(magic.getMagicId()) == false) {   // Updates hero_magic table in database with the new magic
+                            _db.updateHeroMagics(magic.getMagicId());
+
+                            system("clear");
+                            std::cout << "New magic acquired!" << std::endl;
+                            std::cout << std::endl;
+                            magic.print();
+                        }
+
+                    }
+                    else if(_option == 5) {     // If option 5 is choosen hero exits magic shop
+                        system("clear");
+
+                        std::cout << "Come back later to buy new magic!" << std::endl;
+                        _runShop = false;
+                    }
+                    else {                      // If user types incorrect option print error and let user try again
+                        system("clear");
+                        std::cout << "ERROR: Choose a correct option" << std::endl;
+                    }
+                    std::cout << std::endl;
+
                 }
             }
 
@@ -280,8 +345,9 @@ public:
                 int heroHp = hero.getHp();
                 int heroStrength = hero.getStrength();
                 int heroGold = hero.getGold();
+                int heroMagicNiveau = hero.getMagicNiveau();
 
-                _db.updateHero(heroXp, heroLevel, heroHp, heroStrength, heroGold);    // Updating hero in database for the game to be saved
+                _db.updateHero(heroXp, heroLevel, heroHp, heroStrength, heroGold, heroMagicNiveau);    // Updating hero in database for the game to be saved
 
                 _runGame = false;
             }

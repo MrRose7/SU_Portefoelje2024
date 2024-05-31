@@ -592,6 +592,7 @@ CMakeFiles/src_SU_Portefoelje.dir/main.cpp.o: /home/lucas/workspace/2.\ Semester
   /home/lucas/workspace/2.\ Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje/enemy.h \
   /home/lucas/workspace/2.\ Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje/DBFetch.h \
   /home/lucas/workspace/2.\ Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje/cave.h \
+  /home/lucas/workspace/2.\ Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje/magic.h \
   /home/lucas/workspace/2.\ Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje/game.h
 
 
@@ -880,6 +881,8 @@ CMakeFiles/src_SU_Portefoelje.dir/main.cpp.o: /home/lucas/workspace/2.\ Semester
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qbytearraylist.h:
 
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
+
+/home/lucas/workspace/2.\ Semester/SU/SU_Portefoelje/SU_Portefoelje2024/src_SU_Portefoelje/magic.h:
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qtypetraits.h:
 
