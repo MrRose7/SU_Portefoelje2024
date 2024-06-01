@@ -60,11 +60,11 @@ create table hero_magic (
 );
 
 INSERT INTO enemy(enemy_id, name, hp, strength, xp_drop, element) VALUES
-(1, "Blob", 1, 1, 100, NULL),
-(2, "Spike", 3, 2, 500, NULL),
-(3, "Cruel", 10, 5, 1500, NULL),
+(1, "Blob", 1, 1, 100, "Water"),
+(2, "Spike", 3, 2, 500, "Wood"),
+(3, "Cruel", 10, 5, 1500, "Earth"),
 (4, "Demon", 25, 10, 3000, "Fire"),
-(5, "Stormwing", 150, 25, 10000, "Fire"),
+(5, "Stormwing", 150, 25, 50000, "Fire"),
 (6, "Reaper", 5, 3, 1000, "Metal"),
 (7, "Shadow", 5, 5, 1000, "Earth"),
 (8, "Boulder", 7, 3, 700, "Earth"),
@@ -72,8 +72,8 @@ INSERT INTO enemy(enemy_id, name, hp, strength, xp_drop, element) VALUES
 (10, "Skeleton", 10, 5, 200, "Wood"),
 (11, "Skullcrusher", 20, 15, 2000, "Water"),
 (12, "Thief", 10, 7, 300, "Metal"),
-(13, "Coinhead", 20, 10, 3000, "Metal"),
-(14, "Goldclaw", 30, 15, 5000, "Metal");
+(13, "Coinhead", 20, 10, 5000, "Metal"),
+(14, "Goldclaw", 30, 15, 20000, "Metal");
 
 INSERT INTO cave(cave_id, name, gold) VALUES
 (1, "Shadowfall", 100),
@@ -107,7 +107,8 @@ INSERT INTO magic(magic_id, name, strength, self_damage, element, required_magic
 (12, "Hellfire", 15, 5, "Fire", 11, 20000),
 (13, "Steelwhip", 5, 1, "Metal", 0, 1000),
 (14, "Thors_Hammer", 20, 3, "Metal", 0, 10000),
-(15, "Merciless_Hammerstorm", 50, 5, "Metal", 14, 90000);
+(15, "Merciless_Hammerstorm", 50, 5, "Metal", 14, 90000),
+(16, "Dragonheart_Dagger", 50, 0, "Water", 15, 100000);
 
 
 

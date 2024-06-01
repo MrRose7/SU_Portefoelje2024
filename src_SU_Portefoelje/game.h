@@ -95,15 +95,18 @@ public:
                 int enemyHp = enemy.getHp();
                 std::string enemyName = enemy.getName();
 
-                // CREATE OPTION TO CHOOSE MAGIC TO FIGHT WITH
-                // use magic yes(1) / no(2)?
-                // if yes choose magic
-                // check enemy element and choosen magic element
-                // update heroStrength based on elements
-
+                // Loop that makes it possible to choose to fight with heroes acquired magic
                 _runChooseMagic = true;
                 while(_runChooseMagic) {
                     if(_db.getHeroMagicCount() == 0) { break; }     // Breaks while loop if hero has no magic acquired
+
+                    if(hero.getMagicNiveau() == 0) {                // Breaks while loop if hero doesn't have more magic niveau
+                        std::cout << "Not enough magic niveau to use magic in this fight..." << std::endl;
+                        std::cout << "Level up to gain more magic niveau!" << std::endl;
+                        std::cout << std::endl;
+
+                        break;
+                    }
 
                     // Giving hero the chance to use a magic in the fight
                     std::cout << "Use a magic? yes(1) / no(2):  ";
@@ -119,9 +122,12 @@ public:
 
                         Magic magic = _db.selectMagic();
 
+                        // Calculation damage boost and applying it to heroes strength
                         double damageBoost = _db.checkElements(magic.getElement(), enemy.getElement());
                         heroStrength += magic.getStrength()*damageBoost;
-                        _magicSelfDamage = magic.getSelfDamage();
+
+                        _magicSelfDamage = magic.getSelfDamage();   // Applying self damage to hero based on choosen magic
+                        hero.decMagicNiveau();                      // Decreasing magic niveau by 1 because hero choose to use magic in fight
 
                         _runChooseMagic = false;
                     }
@@ -228,12 +234,63 @@ public:
                             int enemyHp = enemy.getHp();
                             std::string enemyName = enemy.getName();
 
+                            // Loop that makes it possible to choose to fight with heroes acquired magic
+                            _runChooseMagic = true;
+                            while(_runChooseMagic) {
+                                if(_db.getHeroMagicCount() == 0) { break; }     // Breaks while loop if hero has no magic acquired
+
+                                if(hero.getMagicNiveau() == 0) {                // Breaks while loop if hero doesn't have more magic niveau
+                                    std::cout << "Not enough magic niveau to use magic in this fight..." << std::endl;
+                                    std::cout << "Level up to gain more magic niveau!" << std::endl;
+                                    std::cout << std::endl;
+
+                                    break;
+                                }
+
+                                // Giving hero the chance to use a magic in the fight
+                                std::cout << "Use a magic? yes(1) / no(2):  ";
+                                std::cin >> _option;
+                                std::cout << std::endl;
+
+                                if(_option == 1) {          // If option 1 is choosen hero is able to choose a magic to use in the fight
+                                    system("clear");
+
+                                    enemy.print();
+                                    hero.print();
+                                    _db.printAcquiredMagic();
+
+                                    Magic magic = _db.selectMagic();
+
+                                    // Calculation damage boost and applying it to heroes strength
+                                    double damageBoost = _db.checkElements(magic.getElement(), enemy.getElement());
+                                    heroStrength += magic.getStrength()*damageBoost;
+
+                                    _magicSelfDamage = magic.getSelfDamage();   // Applying self damage to hero based on choosen magic
+                                    hero.decMagicNiveau();                      // Decreasing magic niveau by 1 because hero choose to use magic in fight
+
+                                    _runChooseMagic = false;
+                                }
+                                else if(_option == 2) {     // If option 2 is choosen fight begins without hero using a magic
+                                    system("clear");
+
+                                    std::cout << "Alright... Good luck!" << std::endl;
+                                    std::cout << std::endl;
+
+                                    _magicSelfDamage = 0;
+                                    _runChooseMagic = false;
+                                }
+                                else {                      // If user types incorrect option print error and let user try again
+                                    std::cout << "ERROR: Choose a correct option" << std::endl;
+                                }
+                            }
+
                             // Creating fighting scene
                             std::cout << "----------- FIGHT IS ON -----------" << std::endl;
                             while(enemyHp > 0 && heroHp > 0) {
                                 std::cout << heroName << " attacks " << enemyName << std::endl;
                                 enemy.decHp(heroStrength);
                                 enemyHp = enemy.getHp();
+                                hero.decHp(_magicSelfDamage);
                                 std::cout << enemyName << " has " << enemyHp << " hp left..." << std::endl;
                                 std::cout << std::endl;
                                 if(enemyHp <= 0) { break; }

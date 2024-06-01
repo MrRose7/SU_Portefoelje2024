@@ -566,7 +566,7 @@ public:
     void printAcquiredMagic() {         // Method for printing a list of heroes acquired magic
         QSqlQuery query;
 
-        query.prepare("SELECT magic.magic_id, name, strength, self_damage, element FROM magic INNER JOIN hero_magic ON magic.magic_id=hero_magic.magic_id WHERE hero_magic.hero_id=?");
+        query.prepare("SELECT magic.magic_id, name, strength, self_damage, element FROM magic INNER JOIN hero_magic ON magic.magic_id=hero_magic.magic_id WHERE hero_magic.hero_id=? ORDER BY hero_magic.magic_id");
         query.addBindValue(_heroSelection);
         query.exec();
 
