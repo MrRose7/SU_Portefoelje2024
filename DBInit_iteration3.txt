@@ -62,18 +62,18 @@ create table hero_magic (
 INSERT INTO enemy(enemy_id, name, hp, strength, xp_drop, element) VALUES
 (1, "Blob", 1, 1, 100, NULL),
 (2, "Spike", 3, 2, 500, NULL),
-(3, "Cruel", 5, 5, 1500, NULL),
-(4, "Demon", 10, 10, 3000, "Fire"),
-(5, "Stormwing", 30, 25, 10000, "Fire"),
+(3, "Cruel", 10, 5, 1500, NULL),
+(4, "Demon", 25, 10, 3000, "Fire"),
+(5, "Stormwing", 150, 25, 10000, "Fire"),
 (6, "Reaper", 5, 3, 1000, "Metal"),
 (7, "Shadow", 5, 5, 1000, "Earth"),
 (8, "Boulder", 7, 3, 700, "Earth"),
 (9, "StoneMan", 5, 10, 1300, "Earth"),
-(10, "Skeleton", 1, 2, 200, "Wood"),
-(11, "Skullcrusher", 10, 8, 2000, "Water"),
-(12, "Thief", 3, 3, 300, "Metal"),
-(13, "Coinhead", 10, 10, 3000, "Metal"),
-(14, "Goldclaw", 15, 12, 5000, "Metal");
+(10, "Skeleton", 10, 5, 200, "Wood"),
+(11, "Skullcrusher", 20, 15, 2000, "Water"),
+(12, "Thief", 10, 7, 300, "Metal"),
+(13, "Coinhead", 20, 10, 3000, "Metal"),
+(14, "Goldclaw", 30, 15, 5000, "Metal");
 
 INSERT INTO cave(cave_id, name, gold) VALUES
 (1, "Shadowfall", 100),
@@ -93,10 +93,21 @@ INSERT INTO cave_enemy(enemy_id, cave_id) VALUES
 (14, 4);
 
 INSERT INTO magic(magic_id, name, strength, self_damage, element, required_magic_id, price) VALUES
-(1, "Dust", 1, 0, "Earth", 0, 100),
-(2, "Mud", 2, 0, "Earth", 1, 300),
-(3, "Mud_Canon", 4, 2, "Earth", 2, 500),
-(4, "Stick", 1, 1, "Wood", 0, 100);
+(1, "Dust", 1, 0, "Earth", 0, 300),
+(2, "Mud", 2, 0, "Earth", 1, 700),
+(3, "Mud_Canon", 4, 2, "Earth", 2, 2000),
+(4, "Stick", 1, 1, "Wood", 0, 200),
+(5, "Spear", 3, 1, "Wood", 4, 1000),
+(6, "Thorn_Gun", 7, 2, "Wood", 5, 3000),
+(7, "Water_ballon", 1, 0, "Water", 0, 300),
+(8, "Glacial_Spear", 4, 1, "Water", 7, 2000),
+(9, "Acid_rain", 10, 5, "Water", 0, 7000),
+(10, "Torch", 3, 1, "Fire", 0, 1000),
+(11, "Firestorm", 7, 2, "Fire", 10, 5000),
+(12, "Hellfire", 15, 5, "Fire", 11, 20000),
+(13, "Steelwhip", 5, 1, "Metal", 0, 1000),
+(14, "Thors_Hammer", 20, 3, "Metal", 0, 10000),
+(15, "Merciless_Hammerstorm", 50, 5, "Metal", 14, 90000);
 
 
 

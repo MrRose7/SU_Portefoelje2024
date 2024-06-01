@@ -17,6 +17,8 @@ public:
 
     int getMagicId() { return _magicId; }               // Getter method for getting magics id
 
+    std::string getName() { return _name; }             // Getter method for getting magis name
+
     int getStrength() { return _strength; }             // Getter method for getting magics strength
 
     int getSelfDamage() { return _selfDamage; }         // Getter method for getting magics self damage

@@ -20,6 +20,8 @@ private:
     int _caveSelection;             // Variable to store user input that is selection for which cave to enter
     std::vector<int> _enemyIdVec;   // Vector to store enemy_id's
     int _buyMagicSelection;         // Variable to store user input that is selection for which magic to buy
+    int _magicSelection;            // Variable to store user input that is selection for which magic to use in fight
+    int _heroMagicCount;            // Variable to store the count of how many magics hero has acquired
 
 public:
     void dbInit() {         // Method for initialising database
@@ -41,8 +43,8 @@ public:
         QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
         db.setHostName("localhost");
         db.setDatabaseName("su_portefoelje2024_it3");
-        db.setUserName(QdbUsername);    // Change to username
-        db.setPassword(QdbPassword);    // Change to password
+        db.setUserName(QdbUsername);    // MYSQL localhost username
+        db.setPassword(QdbPassword);    // MYSQL localhost password
         db.open();
     }
 
@@ -236,7 +238,7 @@ public:
         }
 
         Enemy enemy(name, hp, strength, xp_drop, element);
-        enemy.print();
+//        enemy.print();
         return enemy;
     }
 
@@ -377,7 +379,7 @@ public:
         query.exec();
 
         std::cout << "LIST OF MAGIC TO BUY" << std::endl;
-        std::cout << "-------------------------------------------------------------------------------------------------------" << std::endl;
+        std::cout << "-----------------------------------------------------------------------------------------------------------------------" << std::endl;
         while (query.next()) {
                 QString magic_id = query.value(0).toString();
                 QString name = query.value(1).toString();
@@ -390,7 +392,7 @@ public:
                 std::cout << "id=" << magic_id.toStdString() << ", name=" << name.toStdString() << ", strength=" << strength.toStdString() << ", self_damage=" << self_damage.toStdString() << ", element=" << element.toStdString() << ", required_magic_id=" << required_magic_id.toStdString() << ", price=" << price.toStdString() << std::endl;
 
         }
-        std::cout << "-------------------------------------------------------------------------------------------------------" << std::endl;
+        std::cout << "-----------------------------------------------------------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
     }
 
@@ -487,26 +489,100 @@ public:
         return magic;
     }
 
-    void printAcquiredMagic() { // IKKE FÆRDIG
+    Magic selectMagic() {           // Method for selecting a magic to use in a fight
+        // Vector to store magic_id's in
+        std::vector<int> magic_idVec;
+        int magic_id;
+
+        // SQL query to get all magic_id's from the database
+        QSqlQuery queryCheck;
+        queryCheck.prepare("SELECT hero_magic.magic_id FROM hero_magic WHERE hero_magic.hero_id=?");
+        queryCheck.addBindValue(_heroSelection);
+        queryCheck.exec();
+        while(queryCheck.next()) {  // Loops through all magic_id's in database and appends them to magic_idVec
+            magic_id = queryCheck.value(0).toInt();
+            magic_idVec.push_back(magic_id);
+        }
+
+        bool checkSelection = true;
+        while(checkSelection) {     // Checks if selected magic exists in list of magic
+            std::cout << "Choose a magic to use in fight by writing the magic ID:   ";
+            std::cin >> _magicSelection;
+            std::cout << std::endl;
+
+            // Checks if magic_id exists
+            auto findMagic_id = std::find(magic_idVec.begin(), magic_idVec.end(), _magicSelection);
+            if (findMagic_id != magic_idVec.end()) {
+                checkSelection = false;
+            }
+            else {
+                std::cout << "ERROR: Magic not found in list of acquired magic..." << std::endl;
+            }
+        }
+
         QSqlQuery query;
 
-        // SELECT * FROM magic WHERE magic.magic_id=(SELECT hero_magic.magic_id FROM hero_magic WHERE hero_magic.hero_id=?)
-        query.prepare("SELECT name, strength, self_damage, element FROM magic INNER JOIN hero_magic ON magic.magic_id=hero_magic.magic_id WHERE hero_magic.hero_id=?");
+        query.prepare("SELECT magic_id, name, strength, self_damage, element, required_magic_id, price FROM magic WHERE magic.magic_id=?");
+        query.addBindValue(_magicSelection);
+        query.exec();
+
+        int magicId;
+        std::string name;
+        int strength;
+        int self_damage;
+        std::string element;
+        int required_magic_id;
+        int price;
+        while (query.next()){
+            magicId = query.value(0).toInt();
+            QString tempName = query.value(1).toString();
+            name = tempName.toStdString();
+            strength = query.value(2).toInt();
+            self_damage = query.value(3).toInt();
+            QString tempElement = query.value(4).toString();
+            element = tempElement.toStdString();
+            required_magic_id = query.value(5).toInt();
+            price = query.value(6).toInt();
+        }
+
+        Magic magic(magicId, name, strength, self_damage, element, required_magic_id, price);
+        return magic;
+    }
+
+    int getHeroMagicCount() {           // Method for checking if hero has any magic acquired
+        QSqlQuery queryCount;
+
+        queryCount.prepare("SELECT count(hero_magic.magic_id) FROM hero_magic WHERE hero_magic.hero_id=?");
+        queryCount.addBindValue(_heroSelection);
+        queryCount.exec();
+
+        while(queryCount.next()) {
+            _heroMagicCount = queryCount.value(0).toInt();
+        }
+
+        return _heroMagicCount;
+    }
+
+    void printAcquiredMagic() {         // Method for printing a list of heroes acquired magic
+        QSqlQuery query;
+
+        query.prepare("SELECT magic.magic_id, name, strength, self_damage, element FROM magic INNER JOIN hero_magic ON magic.magic_id=hero_magic.magic_id WHERE hero_magic.hero_id=?");
         query.addBindValue(_heroSelection);
         query.exec();
 
         std::cout << "LIST OF ACQUIRED MAGIC" << std::endl;
-        std::cout << "----------------------------------------------------------" << std::endl;
+        std::cout << "------------------------------------------------------------------------" << std::endl;
         while(query.next()) {
-                QString name = query.value(0).toString();
-                QString strength = query.value(1).toString();
-                QString self_damage = query.value(2).toString();
-                QString element = query.value(3).toString();
+            QString magic_id = query.value(0).toString();
+            QString name = query.value(1).toString();
+            QString strength = query.value(2).toString();
+            QString self_damage = query.value(3).toString();
+            QString element = query.value(4).toString();
 
-                std::cout << "name=" << name.toStdString() << ", strength=" << strength.toStdString() << ", self_damage=" << self_damage.toStdString() << ", element=" << element.toStdString() << std::endl;
+            std::cout << "id=" << magic_id.toStdString() << ", name=" << name.toStdString() << ", strength=" << strength.toStdString() << ", self_damage=" << self_damage.toStdString() << ", element=" << element.toStdString() << std::endl;
 
         }
-        std::cout << "----------------------------------------------------------" << std::endl;
+        std::cout << "------------------------------------------------------------------------" << std::endl;
         std::cout << std::endl;
     }
 
@@ -529,6 +605,20 @@ public:
         }
 
         return checkId;
+    }
+
+    double checkElements(std::string magicElement, std::string enemyElement) {
+        double damageBoost;
+
+        if((magicElement=="Water" && enemyElement=="Fire") || (magicElement=="Fire" && enemyElement=="Metal") || (magicElement=="Metal" && enemyElement=="Wood") || (magicElement=="Wood" && enemyElement=="Earth") || (magicElement=="Earth" && enemyElement=="Water")) {
+            return damageBoost = 2;
+        }
+        else if((enemyElement=="Water" && magicElement=="Fire") || (enemyElement=="Fire" && magicElement=="Metal") || (enemyElement=="Metal" && magicElement=="Wood") || (enemyElement=="Wood" && magicElement=="Earth") || (enemyElement=="Earth" && magicElement=="Water")) {
+            return damageBoost = 0.5;
+        }
+        else {
+            return damageBoost = 1;
+        }
     }
 
     void updateHeroMagics(int magicId) {
