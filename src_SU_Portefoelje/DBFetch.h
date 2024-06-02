@@ -12,7 +12,7 @@
 #include "cave.h"
 #include "magic.h"
 
-/* Class to fetch data from database*/
+/* Class to fetch data from database */
 class DBFetch {
 private:
     int _heroSelection;             // Variable to store user input that is selection for which hero to choose
@@ -24,7 +24,7 @@ private:
     int _heroMagicCount;            // Variable to store the count of how many magics hero has acquired
 
 public:
-    void dbInit() {         // Method for initialising database
+    void dbInit() {                 // Method for initialising database
         std::string dbUsername;
         std::string dbPassword;
 
@@ -53,19 +53,20 @@ public:
         db.open();
     }
 
-    bool printHeroes() {    // Method for printing all heroes in the database, to showcase their stats
+    bool printHeroes() {            // Method for printing all heroes in the database, to showcase their stats
         bool noHeroExists;
         int heroCount;
 
+        // Creating SQL query for checking if there is any heroes in the database
         QSqlQuery queryCheck;
 
         queryCheck.prepare("SELECT count(hero_id) FROM hero");
         queryCheck.exec();
-        while(queryCheck.next()) {
+        while(queryCheck.next()) {  // Counting number of heroes in the database
             heroCount = queryCheck.value(0).toInt();
         }
 
-        if(heroCount == 0) {
+        if(heroCount == 0) {        // If there is no heroes in database this prints an error to the terminal
             system("clear");
             std::cout << "+----------------------------------------------------------+" << std::endl;
             std::cout << "| ERROR: No games exist. Please create a new game to play! |" << std::endl;
@@ -75,7 +76,7 @@ public:
             noHeroExists = true;
         }
 
-        else {
+        else {                      // If there are heroes in the database this lets user choose who to play as
             QSqlQuery query;
 
             query.prepare("SELECT * FROM hero");
@@ -136,7 +137,7 @@ public:
             }
         }
 
-        // Query gets heroes name, xp, level, hp, strength and gold from the database
+        // Query gets heroes information from the database
         QSqlQuery query;
         query.prepare("SELECT name, xp, level, hp, strength, gold, magic_niveau FROM hero WHERE hero.hero_id=?");
         query.addBindValue(_heroSelection);
@@ -160,6 +161,7 @@ public:
             magicNiveau = query.value(6).toInt();
         }
 
+        // Creating instance of hero, printing hero and returning hero
         Hero hero(name, xp, level, hp, strength, gold, magicNiveau);
         hero.print();
         return hero;
@@ -168,6 +170,7 @@ public:
     void printEnemies() {       // Method for printing enemies in the database, outside of caves, to showcase their stats
         QSqlQuery query;
 
+        // SQL query select all enemies from the database that are not in a cave
         query.prepare("SELECT * FROM enemy WHERE enemy.enemy_id NOT IN (SELECT cave_enemy.enemy_id FROM cave_enemy)");
         query.exec();
 
@@ -193,11 +196,11 @@ public:
         std::vector<int> enemy_idVec;
         int enemy_id;
 
-        // SQL query to get all enemies id's from the database
+        // SQL query to get enemy id's, of enemies not in a cave, from the database
         QSqlQuery queryCheck;
         queryCheck.prepare("SELECT enemy.enemy_id FROM enemy WHERE enemy.enemy_id NOT IN (SELECT cave_enemy.enemy_id FROM cave_enemy)");
         queryCheck.exec();
-        while(queryCheck.next()) {  // Loops through all enemy id's in database and appends them to enemy_idVec
+        while(queryCheck.next()) {  // Loops through all enemy id's and appends them to enemy_idVec
             enemy_id = queryCheck.value(0).toInt();
             enemy_idVec.push_back(enemy_id);
         }
@@ -223,6 +226,7 @@ public:
 
         QSqlQuery query;
 
+        // SQL query to select enemy information based on the selection of which enemy to fight
         query.prepare("SELECT name, hp, strength, xp_drop, element FROM enemy WHERE enemy.enemy_id=?");
         query.addBindValue(_enemySelection);
         query.exec();
@@ -250,6 +254,7 @@ public:
     void printCaveEnemies() {       // Method for printing enemies in a cave
         QSqlQuery query;
 
+        // SQL query selects all enemies that are in the cave where hero is
         query.prepare("SELECT * FROM enemy WHERE enemy.enemy_id IN (SELECT cave_enemy.enemy_id FROM cave_enemy WHERE cave_enemy.cave_id=?)");
         query.addBindValue(_caveSelection);
         query.exec();
@@ -326,7 +331,7 @@ public:
         std::cout << std::endl;
     }
 
-    Cave selectCave() {
+    Cave selectCave() {             // Method for selecting which cave to enter
         // Vector to store cave_id's in
         std::vector<int> cave_idVec;
         int cave_id;
@@ -360,6 +365,7 @@ public:
 
         QSqlQuery query;
 
+        // SQL query get caves information
         query.prepare("SELECT name, gold FROM cave WHERE cave.cave_id=?");
         query.addBindValue(_caveSelection);
         query.exec();
@@ -372,6 +378,7 @@ public:
             gold = query.value(1).toInt();
         }
 
+        // Creating instance of cave, printing cave info, and returning that cave
         Cave cave(name, gold);
         cave.print();
         return cave;
@@ -407,6 +414,7 @@ public:
 
         QSqlQuery query1;
 
+        // SQL query gets name of the magic that is required to buy choosen magic
         query1.prepare("SELECT magic.name FROM magic WHERE magic.magic_id=?");
         query1.addBindValue(required_magic_id);
         query1.exec();
@@ -418,6 +426,7 @@ public:
 
         QSqlQuery query2;
 
+        // SQL query gets name of the magic hero wants to buy
         query2.prepare("SELECT magic.name FROM magic WHERE magic.magic_id=?");
         query2.addBindValue(_buyMagicSelection);
         query2.exec();
@@ -431,7 +440,7 @@ public:
         std::cout << std::endl;
     }
 
-    Magic buyMagic() {
+    Magic buyMagic() {          // Method for buying a magic from the magic shop
         // Vector to store magic_id's in
         std::vector<int> magic_idVec;
         int magic_id;
@@ -465,6 +474,7 @@ public:
 
         QSqlQuery query;
 
+        // SQL query gets information about the selected magic
         query.prepare("SELECT magic_id, name, strength, self_damage, element, required_magic_id, price FROM magic WHERE magic.magic_id=?");
         query.addBindValue(_buyMagicSelection);
         query.exec();
@@ -488,9 +498,9 @@ public:
             price = query.value(6).toInt();
         }
 
+        // Creating instance of the purchased magic, printing the magics information, and returning that magic
         Magic magic(magicId, name, strength, self_damage, element, required_magic_id, price);
         magic.print();
-
         return magic;
     }
 
@@ -499,7 +509,7 @@ public:
         std::vector<int> magic_idVec;
         int magic_id;
 
-        // SQL query to get all magic_id's from the database
+        // SQL query to get all magic_id's of heroes acquired magics, from the database
         QSqlQuery queryCheck;
         queryCheck.prepare("SELECT hero_magic.magic_id FROM hero_magic WHERE hero_magic.hero_id=?");
         queryCheck.addBindValue(_heroSelection);
@@ -510,7 +520,7 @@ public:
         }
 
         bool checkSelection = true;
-        while(checkSelection) {     // Checks if selected magic exists in list of magic
+        while(checkSelection) {     // Checks if selected magic exists in list of hero_magic
             std::cout << "Choose a magic to use in fight by writing the magic ID:   ";
             std::cin >> _magicSelection;
             std::cout << std::endl;
@@ -527,6 +537,7 @@ public:
 
         QSqlQuery query;
 
+        // SQL query get information about the selected magic
         query.prepare("SELECT magic_id, name, strength, self_damage, element, required_magic_id, price FROM magic WHERE magic.magic_id=?");
         query.addBindValue(_magicSelection);
         query.exec();
@@ -550,6 +561,7 @@ public:
             price = query.value(6).toInt();
         }
 
+        // Creating instance of the magic hero wants to fight with and returning that magic
         Magic magic(magicId, name, strength, self_damage, element, required_magic_id, price);
         return magic;
     }
@@ -612,9 +624,10 @@ public:
         return checkId;
     }
 
-    double checkElements(std::string magicElement, std::string enemyElement) {
+    double checkElements(std::string magicElement, std::string enemyElement) {      // Method for checking magics element and enemies element to calculate the damage boost of the magic (used in fights with magic)
         double damageBoost;
 
+        // Checking the elements relation to eachother
         if((magicElement=="Water" && enemyElement=="Fire") || (magicElement=="Fire" && enemyElement=="Metal") || (magicElement=="Metal" && enemyElement=="Wood") || (magicElement=="Wood" && enemyElement=="Earth") || (magicElement=="Earth" && enemyElement=="Water")) {
             return damageBoost = 2;
         }
@@ -626,7 +639,7 @@ public:
         }
     }
 
-    void updateHeroMagics(int magicId) {
+    void updateHeroMagics(int magicId) {    // Method for updating heroes magics in the database
         QSqlQuery query;
 
         query.prepare("INSERT INTO hero_magic(hero_id, magic_id) VALUES(?, ?)");

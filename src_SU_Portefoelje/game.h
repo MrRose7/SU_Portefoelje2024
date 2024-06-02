@@ -26,21 +26,24 @@ public:
         // While-loop to run the menu
         _runMenu = true;
         while(_runMenu) {
+            // Welcome message
             std::cout << "Welcome to Dragon Slayer where you, as a hero, will try to fight of all the enemies" << std::endl;
             std::cout << "to get to the final boss, the migthy dragon Stormwing!" << std::endl;
             std::cout << "------------------------------------------------------------------------------------" << std::endl;
             std::cout << std::endl;
 
+            // Giving player the option to start new game og load existing game
             std::cout << "New game (0), Load game (1):  ";
             std::cin >> _option;
             std::cout << std::endl;
             system("clear");
 
-            if(_option == 0) {
+            if(_option == 0) {          // If option 0 is choosen player can create a new hero
                 std::cout << "Welcome to your new game!" << std::endl;
                 std::cout << "It is going to be a fun journey of slaying enemies." << std::endl;
                 std::cout << std::endl;
 
+                // Creating instance of new hero
                 std::string newHeroName = _initHero.newHero();
                 system("clear");
                 Hero hero(newHeroName);
@@ -51,10 +54,10 @@ public:
 
             }
 
-            else if(_option == 1) {
+            else if(_option == 1) {     // If option 1 is choosen player can load a game with an existing hero
                 system("clear");
 
-                // Initialising game by letting player choose a hero to play as and selecting an enemy to fight
+                // Initialising game by letting player choose a hero to play as
                 _runMenu = _db.printHeroes();
                 if(_runMenu == false) {
                     hero = _db.selectHero();
@@ -62,7 +65,7 @@ public:
                 }
             }
 
-            else {
+            else {                      // If user types incorrect option print error and let user try again
                 std::cout << "ERROR: Choose a correct option" << std::endl;
             }
             std::cout << std::endl;
@@ -71,6 +74,7 @@ public:
         // While-loop to run the game
         _runGame = true;
         while(_runGame) {
+            // Giving hero a few options for what to do next
             std::cout << "Fight enemy (2), Enter a cave (3), Visit magic shop (7), Save & exit (9):   ";
             std::cin >> _option;
             std::cout << std::endl;
@@ -120,7 +124,7 @@ public:
                         hero.print();
                         _db.printAcquiredMagic();
 
-                        Magic magic = _db.selectMagic();
+                        Magic magic = _db.selectMagic();    // Creating instance of magic based on heroes selection for which magic to use
 
                         // Calculation damage boost and applying it to heroes strength
                         double damageBoost = _db.checkElements(magic.getElement(), enemy.getElement());
@@ -164,7 +168,7 @@ public:
                 }
 
                 // Choosing future game path based on the fights outcome
-                if(heroHp <= 0) {
+                if(heroHp <= 0) {           // If hero has 0 or below HP then it is game over
                     std::cout << "+---------------------------+" << std::endl;
                     std::cout << "| You have been defeated... |" << std::endl;
                     std::cout << "+---------------------------+" << std::endl;
@@ -173,7 +177,7 @@ public:
                     _db.gameOver();
                     _runGame = false;
                 }
-                else if(enemyHp <= 0) {
+                else if(enemyHp <= 0) {     // If enemy has 0 or below HP then enemy is defeated and fight ends
                     std::cout << "+-------------------------------------+" << std::endl;
                     std::cout << "| You have defeated the mighty enemy!" << " |" << std::endl;
                     std::cout << "+-------------------------------------+" << std::endl;
@@ -192,15 +196,15 @@ public:
 
             }
 
-            else if(_option == 3) {     // If option 3 is choosen hero gets to enter a cave                
+            else if(_option == 3) {     // If option 3 is choosen hero gets to enter a cave
                 // Printing list of caves and letting user choose which cave to enter
                 _db.printCaves();
-                Cave cave = _db.selectCave();
+                Cave cave = _db.selectCave();   // Creating instance of cave based on heroes selection of which cave to enter
 
                 hero.print();
                 _db.printAcquiredMagic();
 
-                _db.printCaveEnemies(); // Printing list of enemies in the choosen cave
+                _db.printCaveEnemies();         // Printing list of enemies in the choosen cave
 
                 std::cout << "Dare to take on all these cave monsters?" << std::endl;
                 std::cout << "Defeat them all and you will be rewarded with " << cave.getGold() << " gold!" << std::endl;
@@ -209,6 +213,7 @@ public:
                 // While loop to run the cave fight
                 _runCave = true;
                 while(_runCave) {
+                    // Giving hero the option to begin fight og exit the cave
                     std::cout << "Begin fight (4), Exit cave (5):   ";
                     std::cin >> _option;
 
@@ -216,6 +221,7 @@ public:
                         system("clear");
                         std::vector<int> caveEnemyIdVec = _db.getEnemyIdVec();
 
+                        // While loop to run the cave fight
                         _runCaveFight = true;
                         int i = 0;
                         while(i < caveEnemyIdVec.size() && _runCaveFight) {
@@ -259,7 +265,7 @@ public:
                                     hero.print();
                                     _db.printAcquiredMagic();
 
-                                    Magic magic = _db.selectMagic();
+                                    Magic magic = _db.selectMagic();    // Creating instance of magic based on heroes selection for which magic to use
 
                                     // Calculation damage boost and applying it to heroes strength
                                     double damageBoost = _db.checkElements(magic.getElement(), enemy.getElement());
@@ -303,7 +309,7 @@ public:
                             }
 
                             // Choosing future game path based on the fights outcome
-                            if(heroHp <= 0) {
+                            if(heroHp <= 0) {           // If hero has 0 or below HP it is game over
                                 std::cout << "+---------------------------+" << std::endl;
                                 std::cout << "| You have been defeated... |" << std::endl;
                                 std::cout << "+---------------------------+" << std::endl;
@@ -315,7 +321,7 @@ public:
                                 _runGame = false;
                                 _gameOver = true;
                             }
-                            else if(enemyHp <= 0) {
+                            else if(enemyHp <= 0) {     // If enemy has 0 or below HP then enemy is defeated and fight ends
                                 std::cout << "+-------------------------------------+" << std::endl;
                                 std::cout << "| You have defeated the mighty enemy!" << " |" << std::endl;
                                 std::cout << "+-------------------------------------+" << std::endl;
@@ -329,6 +335,7 @@ public:
                                 hero.print();
                                 std::cout << std::endl;
 
+                                // Checks if all enemies in the cave have been fought against
                                 if(i < caveEnemyIdVec.size()) {
                                     std::cout << "Press SPACEBAR then ENTER to begin next fight:";
                                 }
@@ -336,6 +343,7 @@ public:
                                     std::cout << "Press SPACEBAR then ENTER to continue:";
                                 }
 
+                                // Waits for user to press SPACEBAR then ENTER
                                 while(1) {
                                     if(' ' == getchar()) {
                                         break;
@@ -351,7 +359,7 @@ public:
 
                         }
 
-                        if(!_gameOver) {
+                        if(!_gameOver) {        // If hero defeated all enemies in the cave this prints a congratulation
                             std::cout << "You made it through the cave. Nicely done!" << std::endl;
                             std::cout << "Your reward for this bravery is " << cave.getGold() << " gold!" << std::endl;
                             std::cout << std::endl;
@@ -381,26 +389,28 @@ public:
                 std::cout << "Here you can acquire new magic to help you fight enemies" << std::endl;
                 std::cout << std::endl;
 
+                // While loop to run the magic shop
                 bool _runShop = true;
                 while(_runShop) {
                     _db.printMagic();
                     hero.print();
                     _db.printAcquiredMagic();
 
+                    // Giving hero the option to buy magic or leave the magic shop
                     std::cout << "Buy new magic (1), Leave magic shop (5):  ";
                     std::cin >> _option;
 
                     if(_option == 1) {          // If optoin 1 is choosen hero is able to buy new magic
                         system("clear");
 
-                        _db.printMagic();
+                        _db.printMagic();       // Prints all magics
 
                         hero.print();
                         _db.printAcquiredMagic();
 
-                        Magic magic = _db.buyMagic();
+                        Magic magic = _db.buyMagic();   // Creates instance of magic
 
-                        if(magic.getRequiredMagic() != 0 && _db.checkHeroMagics(magic.getRequiredMagic()) == false) {
+                        if(magic.getRequiredMagic() != 0 && _db.checkHeroMagics(magic.getRequiredMagic()) == false) {   // Checks if hero has the necessary magic to buy the choosen magic
                             system("clear");
                             _db.printRequiredMagic(magic.getRequiredMagic());
                         }
@@ -443,7 +453,7 @@ public:
                 }
             }
 
-            else if(_option == 9) {     // If option 5 is choosen game is saved and exited
+            else if(_option == 9) {     // If option 9 is choosen game is saved and exited
                 hero.print();
                 _db.printAcquiredMagic();
 

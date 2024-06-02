@@ -39,7 +39,7 @@ public:
 
     Hero(std::string name, int xp, int level, int hp, int strength, int gold, int magicNiveau) : _name(name), _xp(xp), _level(level), _hp(hp), _strength(strength), _gold(gold), _magicNiveau(magicNiveau) {} // Constructor to edit existing hero
 
-    std::string newHero() {     // Method for creating a new character by getting name as user input
+    std::string newHero() {     // Method for creating a new hero by getting name as user input
         std::string newHeroName;
 
         bool checkName = true;
@@ -125,7 +125,7 @@ public:
         }
     }
 
-    void print() {                              // Method for printing heroes info
+    void print() {  // Method for printing heroes info
         std::cout << "----------------------------------" << std::endl;
         std::cout << "Your heroes info:    " << std::endl;
         std::cout << "Name:         " << _name << std::endl;

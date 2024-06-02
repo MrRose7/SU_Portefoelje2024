@@ -4,6 +4,7 @@
 
 class Magic {
 private:
+    // Private variables to store information about a magic
     int _magicId;
     std::string _name;
     int _strength;
@@ -29,7 +30,7 @@ public:
 
     int getPrice() { return _price; }                   // Getter method for getting magics price
 
-    void print() {      // Method for printing magic info
+    void print() {  // Method for printing magic info
         std::cout << "----------------------------------" << std::endl;
         std::cout << "Acquired magic info:" << std::endl;
         std::cout << "Name:         " << _name << std::endl;
