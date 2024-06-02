@@ -28,6 +28,11 @@ public:
         std::string dbUsername;
         std::string dbPassword;
 
+        std::cout << "+-------------------------+" << std::endl;
+        std::cout << "| PLEASE ENTER FULLSCREEN |" << std::endl;
+        std::cout << "+-------------------------+" << std::endl;
+        std::cout << std::endl;
+
         std::cout << "For the database to properly be initialised please type the username and password used for your mysql localhost." << std::endl;
         std::cout << std::endl;
         std::cout << "Username:     ";
@@ -42,7 +47,7 @@ public:
 
         QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
         db.setHostName("localhost");
-        db.setDatabaseName("su_portefoelje2024_it3");
+        db.setDatabaseName("su_portefoelje2024");
         db.setUserName(QdbUsername);    // MYSQL localhost username
         db.setPassword(QdbPassword);    // MYSQL localhost password
         db.open();
