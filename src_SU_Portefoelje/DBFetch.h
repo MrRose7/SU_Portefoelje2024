@@ -243,7 +243,7 @@ public:
         }
 
         Enemy enemy(name, hp, strength, xp_drop, element);
-//        enemy.print();
+
         return enemy;
     }
 
